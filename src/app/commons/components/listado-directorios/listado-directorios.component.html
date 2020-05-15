@@ -1,0 +1,63 @@
+<div class="row">
+    <div class="col-2">
+        <a class="navbar-brand py-2 pl-1 pr-0" href="#" (click)="volver()">
+            <i class="material-icons">keyboard_arrow_left</i>
+        </a>
+    </div>
+    <div class="col-7 pt-2 pr-2 text-center">
+        <span class="path"> {{dirActual.nombre}}</span>
+    </div>
+    <div class="col-3 px-0 ml-auto">
+        <div class="btn-group p-0 m-0" role="group" aria-label="Basic example">
+            <a class="navbar-brand py-2 px-0 m-0" href="#" (click)="tree.treeControl.collapseAll()">
+                <i class="material-icons material-icons-sm" style="margin-top: 3px;">unfold_less</i>
+            </a>
+            <a class="navbar-brand py-2 pl-0 pr-2 m-0" href="#" (click)="tree.treeControl.expandAll()">
+                <i class="material-icons material-icons-sm" style="margin-top: 3px;">unfold_more</i>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="h-300 scroll-y hidden-scrolls opacity ">
+    <mat-tree #tree [dataSource]="dataSource" [treeControl]="treeControl">
+        <!-- This is the tree node template for leaf nodes -->
+        <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding matTreeNodePaddingIndent="10">
+            <!-- use a disabled button to provide padding for tree leaf -->
+            <button mat-icon-button class="p-0 button-transparent ">
+                <mat-icon class="mat-icon-rtl-mirror icon">
+                    <!-- remove -->
+                </mat-icon>
+            </button>
+            <a href="#" class="pl-0" (click)="node.isFile? verFile(node.path) : setPath(node.path)"
+                [ngClass]="{'link-file': node.isFile}">{{node.name}}</a>
+            <mat-icon class="mat-icon-rtl-mirror icon ml-auto text-muted">
+                {{node.isFile? 'insert_drive_file': 'folder'}}
+            </mat-icon>
+        </mat-tree-node>
+        <!-- This is the tree node template for expandable nodes -->
+        <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding matTreeNodePaddingIndent="10">
+            <button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.path"
+                (click)="treeControl.isExpanded(node) ? desplegar(node.path): cerrar(node.path)" *ngIf="!node.isFile"
+                class="p-0 button-transparent ">
+                <mat-icon class="mat-icon-rtl-mirror icon">
+                    {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                </mat-icon>
+            </button>
+            <div *ngIf="node.isFile" style="padding-left: 24px;">
+
+            </div>
+            <a href="#" class="pl-0" (click)="node.isFile? verFile(node.path) : setPath(node.path)"
+                [ngClass]="{'link-file': node.isFile}">
+                {{node.name}}
+            </a>
+            <mat-icon class="mat-icon-rtl-mirror icon ml-auto text-muted">
+                {{node.isFile? 'insert_drive_file': 'folder'}}
+            </mat-icon>
+
+        </mat-tree-node>
+    </mat-tree>
+</div>
+
+<div class="row">
+
+</div>

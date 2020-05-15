@@ -1,0 +1,36 @@
+<div class="card text-white bg-dark mb-3 w-100 mt-0">
+    <div class="card-header p-0 pt-2">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <div style="margin-left: 29px;">
+
+                </div>
+                <a class="nav-item nav-link py-1" data-toggle="tab" href="#" *ngIf="fileOpen != null"
+                    (click)="codeViewClick('FILE_OPEN')" [ngClass]="{'active': isView('FILE_OPEN')}">
+                    <span> {{fileOpen.nombre}}</span>
+                </a>
+                <a class="nav-item nav-link py-1" data-toggle="tab" href="#" [ngClass]="{'active': isView('ENTIDAD')}"
+                    (click)="codeViewClick('ENTIDAD')">
+                    <span> ENTIDAD</span>
+                </a>
+                <a class="nav-item nav-link py-1" data-toggle="tab" href="#"
+                    [ngClass]="{'active': isView('CONTROLADOR')}" (click)="codeViewClick('CONTROLADOR')">
+                    <span> CONTROLADOR</span>
+                </a>
+                <a class="nav-item nav-link py-1" data-toggle="tab" href="#" [ngClass]="{'active': isView('SERVICIO')}"
+                    (click)="codeViewClick('SERVICIO')">
+                    <span> SERVICIO</span>
+                </a>
+                <a class="nav-item nav-link py-1" data-toggle="tab" href="#"
+                    [ngClass]="{'active': isView('REPOSITORIO')}" (click)="codeViewClick('REPOSITORIO')">
+                    <span> REPOSITORIO</span>
+                </a>
+
+            </div>
+        </nav>
+    </div>
+    <div class="card-body p-0">
+        <ngx-codemirror #codemirror [options]="codeMirrorOptions" [(ngModel)]="code">
+        </ngx-codemirror>
+    </div>
+</div>

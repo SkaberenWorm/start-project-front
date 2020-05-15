@@ -1,0 +1,115 @@
+/* ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    position: relative;
+}
+li {
+    list-style-type: none;
+    border-left: 2px solid #000;
+    margin-left: 1em;
+}
+li a {
+    padding-left: 1em;
+    position: relative;
+    font-size: 11px;
+    color: white;
+}
+a:hover {
+    font-weight: 500;
+    color: white;
+}
+li a::before {
+    content:'';
+    position: absolute;
+    top: 0;
+    left: -2px;
+    bottom: 50%;
+    width: 0.75em;
+    border: 2px solid #000;
+    border-top: 0 none transparent;
+    border-right: 0 none transparent;
+}
+ul > li:last-child {
+    border-left: 2px solid transparent;
+} */
+/**********/
+a {
+    padding-left: 1em;
+    padding-right: 1em;
+    font-size: 11px;
+    color: white;
+    line-height: normal;
+}
+a.link-file{
+    color: #CC7832;
+}
+a:hover {
+    font-weight: 500;
+    color: white;
+}
+a.link-file:hover{
+    color: #CC7832;
+}
+
+span{
+    color: white;
+}
+
+span.path{
+    width: 200px;
+    font-size: 12px;
+    color: white;
+    font-weight: 500;
+    text-transform: uppercase;
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+
+
+
+li {
+    margin-left: 0px !important;
+}
+
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: 5px;
+    background-color: transparent !important;
+    font-size: 11px;
+}
+
+.mat-tree {
+    background: transparent !important;
+}
+
+.mat-tree-node{
+    min-height: 0px;
+}
+
+.button-transparent {     
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;   
+    height: 20px;     
+}
+
+.mat-icon-rtl-mirror.material-icons{
+    font-size: 20px;
+}
+.material-icons.material-icons-sm{
+    font-size: 20px;
+}
+
+
+.opacity{
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.h-300 {
+    height: 300px;
+}
+
