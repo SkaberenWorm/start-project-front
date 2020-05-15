@@ -7,18 +7,18 @@
     <div class="col-7 pt-2 pr-2 text-center">
         <span class="path"> {{dirActual.nombre}}</span>
     </div>
-    <div class="col-3 px-0 ml-auto">
+    <div class="col-3 pl-0 text-right ml-auto">
         <div class="btn-group p-0 m-0" role="group" aria-label="Basic example">
+            <a class="navbar-brand py-2 pl-0  m-0" href="#" (click)="cargarDirectorios()">
+                <i class="material-icons material-icons-sm" style="margin-top: 3px;">refresh</i>
+            </a>
             <a class="navbar-brand py-2 px-0 m-0" href="#" (click)="tree.treeControl.collapseAll()">
                 <i class="material-icons material-icons-sm" style="margin-top: 3px;">unfold_less</i>
-            </a>
-            <a class="navbar-brand py-2 pl-0 pr-2 m-0" href="#" (click)="tree.treeControl.expandAll()">
-                <i class="material-icons material-icons-sm" style="margin-top: 3px;">unfold_more</i>
             </a>
         </div>
     </div>
 </div>
-<div class="h-300 scroll-y hidden-scrolls opacity ">
+<div class="h-500 scroll-y hidden-scrolls list-dir p-1">
     <mat-tree #tree [dataSource]="dataSource" [treeControl]="treeControl">
         <!-- This is the tree node template for leaf nodes -->
         <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding matTreeNodePaddingIndent="10">
@@ -30,9 +30,11 @@
             </button>
             <a href="#" class="pl-0" (click)="node.isFile? verFile(node.path) : setPath(node.path)"
                 [ngClass]="{'link-file': node.isFile}">{{node.name}}</a>
-            <mat-icon class="mat-icon-rtl-mirror icon ml-auto text-muted">
-                {{node.isFile? 'insert_drive_file': 'folder'}}
-            </mat-icon>
+            <a href="#" class="ml-auto p-0" (click)="node.isFile? verFile(node.path) : setPath(node.path)">
+                <mat-icon class="mat-icon-rtl-mirror icon  text-muted">
+                    {{node.isFile? 'insert_drive_file': 'folder'}}
+                </mat-icon>
+            </a>
         </mat-tree-node>
         <!-- This is the tree node template for expandable nodes -->
         <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding matTreeNodePaddingIndent="10">
@@ -46,13 +48,16 @@
             <div *ngIf="node.isFile" style="padding-left: 24px;">
 
             </div>
-            <a href="#" class="pl-0" (click)="node.isFile? verFile(node.path) : setPath(node.path)"
+            <a href="#" class="pl-0"
+                (click)="node.isFile? verFile(node.path) : isExpanded(node) ? desplegar(node.path) : cerrar(node.path)"
                 [ngClass]="{'link-file': node.isFile}">
                 {{node.name}}
             </a>
-            <mat-icon class="mat-icon-rtl-mirror icon ml-auto text-muted">
-                {{node.isFile? 'insert_drive_file': 'folder'}}
-            </mat-icon>
+            <a href="#" class="ml-auto p-0" (click)="node.isFile? verFile(node.path) : setPath(node.path)">
+                <mat-icon class="mat-icon-rtl-mirror icon  text-muted">
+                    {{node.isFile? 'insert_drive_file': 'folder'}}
+                </mat-icon>
+            </a>
 
         </mat-tree-node>
     </mat-tree>

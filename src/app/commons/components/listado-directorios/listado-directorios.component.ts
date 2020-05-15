@@ -72,7 +72,7 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
 
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
-  private cargarDirectorios() {
+  public cargarDirectorios() {
     this.directorioService.getDirectorios(this.path, this.directoriosDesplegados).subscribe(result => {
       this.directorios = result;
 
@@ -136,6 +136,15 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
     this.lecturaService.leerFile(pathFile).subscribe(result => {
       this.store.dispatch(setFileOpen({ file: result }));
     });
+  }
+
+  isExpanded(node: ExampleFlatNode) {
+    if (!this.treeControl.isExpanded(node)) {
+      this.treeControl.expand(node);
+    } else {
+      this.treeControl.collapse(node);
+    }
+    return this.treeControl.isExpanded(node);
   }
 
 

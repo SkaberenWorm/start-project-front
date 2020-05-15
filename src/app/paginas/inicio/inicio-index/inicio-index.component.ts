@@ -97,7 +97,11 @@ export class InicioIndexComponent implements OnInit, OnDestroy {
       default:
         return false;
     }
+  }
 
+  closeCode() {
+    this.code = "";
+    this.fileOpen = null;
   }
 
 

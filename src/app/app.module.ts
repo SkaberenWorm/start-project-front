@@ -53,6 +53,7 @@ import { appEffect } from './store/effects';
 import localeES from '@angular/common/locales/es-CL';
 import { DefaultLayoutComponent } from './layouts/default/default-layout.component';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 registerLocaleData(localeES, 'es-CL');
 
@@ -63,6 +64,7 @@ registerLocaleData(localeES, 'es-CL');
     MatListModule,
     FormsModule
   ],
+  imports: [ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })],
 })
 export class MaterialModule { }
 

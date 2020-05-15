@@ -8,6 +8,9 @@
                 <a class="nav-item nav-link py-1" data-toggle="tab" href="#" *ngIf="fileOpen != null"
                     (click)="codeViewClick('FILE_OPEN')" [ngClass]="{'active': isView('FILE_OPEN')}">
                     <span> {{fileOpen.nombre}}</span>
+                    <button type="button" class="close text-white pl-2" aria-label="Close" (click)="closeCode()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </a>
                 <a class="nav-item nav-link py-1" data-toggle="tab" href="#" [ngClass]="{'active': isView('ENTIDAD')}"
                     (click)="codeViewClick('ENTIDAD')">

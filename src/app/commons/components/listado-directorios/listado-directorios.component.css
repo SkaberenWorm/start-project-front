@@ -1,38 +1,4 @@
-/* ul {
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-    position: relative;
-}
-li {
-    list-style-type: none;
-    border-left: 2px solid #000;
-    margin-left: 1em;
-}
-li a {
-    padding-left: 1em;
-    position: relative;
-    font-size: 11px;
-    color: white;
-}
-a:hover {
-    font-weight: 500;
-    color: white;
-}
-li a::before {
-    content:'';
-    position: absolute;
-    top: 0;
-    left: -2px;
-    bottom: 50%;
-    width: 0.75em;
-    border: 2px solid #000;
-    border-top: 0 none transparent;
-    border-right: 0 none transparent;
-}
-ul > li:last-child {
-    border-left: 2px solid transparent;
-} */
+
 /**********/
 a {
     padding-left: 1em;
@@ -109,7 +75,10 @@ li {
     background-color: rgba(0, 0, 0, 0.05);
 }
 
-.h-300 {
-    height: 300px;
+.h-500 {
+    height: 500px;
 }
 
+.list-dir{
+    background: rgb(49, 51, 53);
+}
