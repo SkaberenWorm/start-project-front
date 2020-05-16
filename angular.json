@@ -48,8 +48,7 @@
               "node_modules/bootstrap-select/dist/js/bootstrap-select.js",
               "node_modules/jasny-bootstrap/dist/js/jasny-bootstrap.min.js",
               "node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js",
-              "src/assets/js/core/propias.js",
-              "node_modules/codemirror/lib/codemirror.js"
+              "src/assets/js/core/propias.js"
             ]
           },
           "configurations": {

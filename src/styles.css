@@ -4,6 +4,9 @@
 @import "~codemirror/theme/dracula";
 @import "~codemirror/theme/darcula";
 @import "~codemirror/theme/ayu-dark";
+@import '~codemirror/lib/codemirror.css';
+@import '~codemirror/addon/fold/foldgutter.css';
+@import '~codemirror/addon/lint/lint.css';
 
 .custom-error {
   color: red;
@@ -413,6 +416,11 @@ span.cerrar:hover {
   height: 39px !important;
 }
 
+.text-orange{
+  color: orange;
+}
+
+
 
 .nav-tabs .nav-link.active {
   color: #ffffff !important;
@@ -440,15 +448,52 @@ span.cerrar:hover {
 .CodeMirror-scroll {
   overflow-y: auto;
   overflow-x: auto;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
 }
 
 .CodeMirror {
   border-bottom-right-radius: 6px;
   border-bottom-left-radius: 6px;
-  height: 500px !important;
+  height: auto !important;
+  font-size: 13px;
+}
+
+.CodeMirror pre.CodeMirror-line, .CodeMirror pre{
+  height: 17px;
+  /* max-height: 17px; */
+}
+
+.cm-s-darcula span.cm-variable {
+  color: #bccbdc;
+}
+
+.cm-s-darcula span.cm-type {
+  color: #bccbdc;
+  font-weight: bold;
+}
+
+.cm-s-darcula span.cm-comment {
+  color: #53b73a;
+  font-style: italic;
 }
 
 
+.cm-s-darcula span.cm-def {
+  color: #3b97f9 ;
+  font-style: italic;
+}
+
+.cm-s-darcula span.cm-string {
+  color: #8bb573;
+}
+
+.cm-s-darcula span.cm-meta {
+  color: #e0d700;
+}
+
+
+/**************************************/
 
 .scroll-y{
   overflow-y: scroll;
@@ -458,11 +503,30 @@ span.cerrar:hover {
   overflow-y: hidden;
 }
 
-.CodeMirror pre.CodeMirror-line, .CodeMirror pre{
-  height: 17px;
-  /* max-height: 17px; */
+
+
+.bg-dark-body{
+  background:rgb(43, 43, 43)
 }
 
 
+/**************************************/
+.as-split-gutter-icon{
+  background-color: #212121;
+  flex-basis: 5px !important;
+}
 
+.as-split-gutter{
+  flex-basis: 5px !important;
+}
 
+as-split-area {
+  border-radius: 6px;
+}
+
+/**************************************/
+
+.card-body{
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+}

@@ -4,15 +4,11 @@ import { Action } from '@ngrx/store';
 import { ArchivoModel } from 'src/app/commons/models/archivo.model';
 
 export interface LecturaState {
-    loading: boolean,
     file: ArchivoModel,
-    mensajeError: string,
 }
 
 export const initialState: LecturaState = {
-    loading: false,
     file: null,
-    mensajeError: null
 }
 const _lecturaReducer = createReducer(initialState,
 

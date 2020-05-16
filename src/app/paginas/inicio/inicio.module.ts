@@ -9,6 +9,7 @@ import { CommonsServiceModule } from 'src/app/commons/commons-service.module';
 import { InicioIndexComponent } from './inicio-index/inicio-index.component';
 import { MatSidenavModule } from '@angular/material';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
+import { AngularSplitModule } from 'angular-split';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { CodemirrorModule } from '@ctrl/ngx-codemirror';
     ReactiveFormsModule,
     CommonsServiceModule,
     MatSidenavModule,
-    CodemirrorModule
+    CodemirrorModule,
+    AngularSplitModule
   ],
   providers: [InicioService]
 })

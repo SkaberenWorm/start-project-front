@@ -54,6 +54,7 @@ import localeES from '@angular/common/locales/es-CL';
 import { DefaultLayoutComponent } from './layouts/default/default-layout.component';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { AngularSplitModule } from 'angular-split';
 
 registerLocaleData(localeES, 'es-CL');
 
@@ -76,6 +77,7 @@ export class MaterialModule { }
     RouterModule.forRoot(AppRoutes, {
       useHash: true
     }),
+    AngularSplitModule.forRoot(),
     HttpClientModule,
     MaterialModule,
     MatNativeDateModule,

@@ -3,20 +3,40 @@
 a {
     padding-left: 1em;
     padding-right: 1em;
-    font-size: 11px;
+    font-size: 12px;
     color: white;
     line-height: normal;
 }
 a.link-file{
-    color: #CC7832;
+    color: rgb(228, 133, 56);
+    white-space: nowrap;
+    overflow: auto;
 }
-a:hover {
+/* a:hover {
     font-weight: 500;
     color: white;
+} */
+.icon:hover{
+    color: rgba(255, 255, 255, 0.6) !important ;
 }
+.mat-tree-node:hover > a.link-file,
 a.link-file:hover{
-    color: #CC7832;
+    color: orange;
+    font-weight: bold;
 }
+
+.mat-tree-node:hover > a.link-dir,
+a.link-dir:hover{
+    color: white;
+    font-weight: bold;
+}
+
+a.link-file.active{
+    color: orange;
+    font-weight: bold;
+}
+
+
 
 span{
     color: white;
@@ -24,13 +44,14 @@ span{
 
 span.path{
     width: 200px;
-    font-size: 12px;
+    font-size: 13px;
     color: white;
     font-weight: 500;
     text-transform: uppercase;
     overflow-x: hidden;
     white-space: nowrap;
 }
+
 
 
 
@@ -53,6 +74,9 @@ li {
 .mat-tree-node{
     min-height: 0px;
 }
+.mat-tree-node:hover{
+    background: rgba(255, 255, 255, 0.03) !important ;   
+}
 
 .button-transparent {     
     background-color: Transparent;
@@ -70,15 +94,13 @@ li {
     font-size: 20px;
 }
 
-
-.opacity{
-    background-color: rgba(0, 0, 0, 0.05);
-}
-
 .h-500 {
     height: 500px;
 }
 
 .list-dir{
-    background: rgb(49, 51, 53);
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
 }
+
+

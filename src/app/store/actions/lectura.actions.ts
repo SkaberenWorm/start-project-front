@@ -8,6 +8,6 @@ export const openFile = createAction(
 );
 
 export const setFileOpen = createAction(
-    '[LECTURA] Set file open',
+    '[LECTURA] Set open file',
     props<{ file: ArchivoModel }>()
 );

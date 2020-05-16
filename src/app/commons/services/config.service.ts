@@ -1,17 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, fromEvent } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class InicioService {
+export class ConfigService {
 
+  constructor() { }
 
-  constructor(public http: HttpClient) {
-
-  }
-
-
+  public resizeObservable$: Observable<Event> = fromEvent(window, 'resize');
 
 }

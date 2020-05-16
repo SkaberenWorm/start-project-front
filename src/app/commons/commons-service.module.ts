@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 
 import { Util } from './util/util';
@@ -16,8 +16,11 @@ import { DirectorioService } from './services/directorio.service';
 import { ListadoDirectoriosComponent } from './components/listado-directorios/listado-directorios.component';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EditorComponent } from './components/editor/editor.component';
+import { PanelComponent } from './components/panel/panel.component';
+import { AngularSplitModule } from 'angular-split';
 @NgModule({
-  declarations: [ListadoDirectoriosComponent],
+  declarations: [ListadoDirectoriosComponent, EditorComponent, PanelComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -33,7 +36,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatExpansionModule,
     MatTreeModule,
     MatIconModule,
-    CodemirrorModule
+    CodemirrorModule,
+    AngularSplitModule.forRoot()
   ],
   providers: [
     Util,
@@ -42,6 +46,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     UtilAlert,
     DirectorioService
   ],
-  exports: [ListadoDirectoriosComponent]
+  exports: [ListadoDirectoriosComponent, EditorComponent, PanelComponent]
 })
 export class CommonsServiceModule { }

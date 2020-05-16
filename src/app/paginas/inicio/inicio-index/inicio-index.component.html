@@ -1,39 +1,63 @@
-<div class="card text-white bg-dark mb-3 w-100 mt-0">
-    <div class="card-header p-0 pt-2">
-        <nav>
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <div style="margin-left: 29px;">
+<!-- <div class="row">
+    <div class="col-sm-3  pr-0">
+        
+    </div>
 
-                </div>
-                <a class="nav-item nav-link py-1" data-toggle="tab" href="#" *ngIf="fileOpen != null"
-                    (click)="codeViewClick('FILE_OPEN')" [ngClass]="{'active': isView('FILE_OPEN')}">
-                    <span> {{fileOpen.nombre}}</span>
-                    <button type="button" class="close text-white pl-2" aria-label="Close" (click)="closeCode()">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </a>
-                <a class="nav-item nav-link py-1" data-toggle="tab" href="#" [ngClass]="{'active': isView('ENTIDAD')}"
-                    (click)="codeViewClick('ENTIDAD')">
-                    <span> ENTIDAD</span>
-                </a>
-                <a class="nav-item nav-link py-1" data-toggle="tab" href="#"
-                    [ngClass]="{'active': isView('CONTROLADOR')}" (click)="codeViewClick('CONTROLADOR')">
-                    <span> CONTROLADOR</span>
-                </a>
-                <a class="nav-item nav-link py-1" data-toggle="tab" href="#" [ngClass]="{'active': isView('SERVICIO')}"
-                    (click)="codeViewClick('SERVICIO')">
-                    <span> SERVICIO</span>
-                </a>
-                <a class="nav-item nav-link py-1" data-toggle="tab" href="#"
-                    [ngClass]="{'active': isView('REPOSITORIO')}" (click)="codeViewClick('REPOSITORIO')">
-                    <span> REPOSITORIO</span>
-                </a>
-
+    <div class="col-sm-9">
+        <div class="row">
+            <div class="col-sm-12 ">
+                <app-editor></app-editor>
             </div>
-        </nav>
+        </div>
     </div>
-    <div class="card-body p-0">
-        <ngx-codemirror #codemirror [options]="codeMirrorOptions" [(ngModel)]="code">
-        </ngx-codemirror>
+
+    <div class="col-sm-12">
+        <app-panel></app-panel>
     </div>
+</div> -->
+
+<div [style.height.px]="height - 15">
+    <as-split direction="vertical">
+        <as-split-area size="65">
+            <as-split direction="horizontal">
+                <as-split-area size="{{sizeListadoDirectorios}}">
+                    <app-listado-directorios></app-listado-directorios>
+                </as-split-area>
+                <as-split-area size="{{100 - sizeListadoDirectorios}}">
+                    <app-editor></app-editor>
+                </as-split-area>
+
+            </as-split>
+        </as-split-area>
+        <as-split-area size="35">
+            <as-split direction="horizontal" class="pr-1">
+                <as-split-area size="100">
+                    <app-panel></app-panel>
+                </as-split-area>
+            </as-split>
+        </as-split-area>
+    </as-split>
 </div>
+
+<!-- <div style=" height: 500px;">
+    <as-split direction="vertical">
+        <as-split-area size="60">
+            <as-split direction="horizontal">
+                <as-split-area size="20">
+                    <h1>TEXTO NUMERO 1</h1>
+                </as-split-area>
+                <as-split-area size="80">
+                    <h1>TEXTO NUMERO 2</h1>
+                </as-split-area>
+
+            </as-split>
+        </as-split-area>
+        <as-split-area size="40">
+            <as-split direction="horizontal">
+                <as-split-area size="100">
+                    <h1>TEXTO NUMERO 4</h1>
+                </as-split-area>
+            </as-split>
+        </as-split-area>
+    </as-split>
+</div> -->
