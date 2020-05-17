@@ -1,0 +1,28 @@
+.verticaltext {
+    writing-mode: vertical-rl; 
+    transform: rotate(-180deg);
+    font-size: 13px;
+    color: white;
+    font-weight: 500;
+    text-transform: uppercase;
+    overflow-y: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.center{
+    position: absolute;
+    bottom: 10px;
+}
+
+.split-header{
+    background-color:red;
+    width: 25px;
+    align-items: center;
+    white-space: nowrap;
+    overflow-y: hidden;
+}
+
+.inline{
+    display: inline;
+}

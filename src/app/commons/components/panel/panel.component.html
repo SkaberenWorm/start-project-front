@@ -5,7 +5,93 @@
             <span class="text-white">{{package}}</span>
         </code>
     </div>
-    <div class="card-body bg-dark-body ">
+    <div class="card-body bg-dark-body p-0">
+        <as-split gutterSize="30" (dragEnd)="log($event)">
 
+            <as-split-area size="30">
+                <as-split unit="pixel" direction="horizontal" disabled="false">
+                    <as-split-area size="25" minSize="25" maxSize="25">
+                        <div class="inline">
+                            <div class="split-header float-left h-100">
+                                <div class="">1</div>
+                                <div class="mt-auto center">
+                                    <span class="verticaltext path">PACKAGES</span>
+                                </div>
+                            </div>
+                        </div>
+                    </as-split-area>
+                    <as-split-area size="100" minSize="25">
+                        <h1>A</h1>
+                    </as-split-area>
+                </as-split>
+
+            </as-split-area>
+
+            <as-split-area size="70">
+                <as-split unit="pixel" direction="horizontal" disabled="true">
+                    <as-split-area size="25" minSize="25" maxSize="25">
+                        <div class="inline">
+                            <div class="split-header float-left h-100">
+                                <div class="">1</div>
+                                <div class="mt-auto center">
+                                    <span class="verticaltext path">PACKAGES</span>
+                                </div>
+                            </div>
+                        </div>
+                    </as-split-area>
+                    <as-split-area size="*">
+                        <h1>B</h1>
+                    </as-split-area>
+                </as-split>
+
+            </as-split-area>
+
+
+            <!-- <as-split-area size="25" minSize="25" maxSize="25">
+                <div class="inline">
+                    <div class="split-header float-left h-100">
+                        <div class="">1</div>
+                        <div class="mt-auto center">
+                            <span class="verticaltext path">PACKAGES</span>
+                        </div>
+                    </div>
+                </div>
+            </as-split-area>
+
+            <as-split-area size="*">
+                <h1>A</h1>
+            </as-split-area>
+
+            <as-split-area size="25" minSize="25" maxSize="25">
+                <div class="inline">
+                    <div class="split-header float-left h-100">
+                        <div class="">1</div>
+                        <div class="mt-auto center">
+                            <span class="verticaltext path">PACKAGES</span>
+                        </div>
+                    </div>
+                </div>
+            </as-split-area>
+
+            <as-split-area size="*">
+                <h1>B</h1>
+            </as-split-area> -->
+
+
+            <!-- <as-split-area size="200" minSize="100">
+
+                <div class="inline">
+                    <div class="split-header float-left h-100">
+                        <div class="">1</div>
+                        <div class="mt-auto center">
+                            <span class="verticaltext path">PACKAGES</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="inline">
+                    <span class="">B</span>
+                </div>
+            </as-split-area> -->
+        </as-split>
     </div>
 </div>

@@ -20,6 +20,7 @@ export enum codigo {
 export class EditorComponent implements OnInit, OnDestroy {
 
   public code = "";
+  public codeEdited = "";
   public selectedView = codigo.ENTIDAD;
 
   public fileOpen: ArchivoModel = null;
@@ -30,6 +31,8 @@ export class EditorComponent implements OnInit, OnDestroy {
   private mode = '';
 
   public codeMirrorOptions: any = {};
+
+  public isSaved = true;
 
 
 
@@ -70,7 +73,6 @@ export class EditorComponent implements OnInit, OnDestroy {
       extension = extension.substring(extension.indexOf('.'), extension.length);
     });
     extension = extension.replace('.', '');
-    console.log(extension);
     switch (extension) {
       case 'java':
         this.mode = 'text/x-java';
@@ -105,7 +107,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.mode = 'text/x-java';
         break;
     }
-    console.log(this.mode);
+    // console.log(this.mode);
     this.setCodeMirrorOptions();
   }
 
@@ -127,18 +129,19 @@ export class EditorComponent implements OnInit, OnDestroy {
       autoCloseBrackets: true,
       lint: true,
       extraKeys: {
-        "Esc": function () {
-          console.log('ESC');
-          this.closeCode();
-        },
-        "Ctrl-S": function () {
-          console.log('save');
-        },
-        "Cmd-S": function () {
-          console.log('save');
-        },
+        "Esc": () => this.closeCode(),
+        "Ctrl-S": () => this.saveCode(),
+        "Cmd-S": () => this.saveCode(),
       }
     };
+  }
+
+
+  saveCode() {
+    this.isSaved = true;
+    this.fileOpen.contenido = this.codeEdited;
+    this.store.dispatch(setFileOpen({ file: this.fileOpen }));
+    console.log('save');
   }
 
   codeViewClick(selected: string) {
@@ -184,7 +187,6 @@ export class EditorComponent implements OnInit, OnDestroy {
   }
 
   closeCode(): void {
-    console.log('Set null');
     this.code = "";
     this.fileOpen = null;
     this.store.dispatch(setFileOpen({ file: null }));
@@ -192,6 +194,12 @@ export class EditorComponent implements OnInit, OnDestroy {
 
   setEditorContent(codigo: string) {
     console.log(codigo);
+    this.codeEdited = codigo;
+    if (codigo != this.fileOpen.contenido) {
+      this.isSaved = false;
+    } else {
+      this.isSaved = true;
+    }
   }
 
 }

@@ -62,6 +62,8 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
+  public localStorageLastPath = 'angular-last-path';
+
   constructor(
     private directorioService: DirectorioService,
     private lecturaService: LecturaService,
@@ -76,12 +78,14 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.cargarDirectorios();
 
+    if (localStorage.getItem(this.localStorageLastPath)) {
+      this.path = atob(localStorage.getItem(this.localStorageLastPath));
+    }
+    this.cargarDirectorios();
     this._subscription = this.store.select('lectura').subscribe(state => {
       if (state.file == null) {
         this.unSelectedAllFiles();
-        console.log('Se quitaron los nodos seleccionados');
       }
     });
   }
@@ -107,6 +111,7 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
       if (this.dirActual.path !== this.directorios[1].path) {
         this.dirBack = this.directorios[0];
         this.dirActual = this.directorios[1];
+        localStorage.setItem(this.localStorageLastPath, btoa(this.dirActual.path));
         this.store.dispatch(setCurrentDirectory({ dir: this.dirActual }));
       }
 
@@ -203,7 +208,6 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
       });
     }
   }
-
 
   /**
    * Expande el directorio

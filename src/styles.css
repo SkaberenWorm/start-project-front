@@ -520,7 +520,10 @@ span.cerrar:hover {
   flex-basis: 5px !important;
 }
 
-as-split-area {
+as-split-area.rounted {
+  border-radius: 6px;
+}
+as-split.rounted {
   border-radius: 6px;
 }
 
@@ -530,3 +533,14 @@ as-split-area {
   border-top-left-radius: 0px !important;
   border-top-right-radius: 0px !important;
 }
+
+.nav-tabs .nav-link {
+  border-bottom: 0.1rem solid transparent;
+}
+
+.nav-tabs .nav-link:hover {
+  border-bottom: 0.1rem solid #6c747d;
+}
+
+.material-icons.md-12 { font-size: 12px; }
+

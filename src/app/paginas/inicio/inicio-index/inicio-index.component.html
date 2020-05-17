@@ -1,35 +1,16 @@
-<!-- <div class="row">
-    <div class="col-sm-3  pr-0">
-        
-    </div>
-
-    <div class="col-sm-9">
-        <div class="row">
-            <div class="col-sm-12 ">
-                <app-editor></app-editor>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-12">
-        <app-panel></app-panel>
-    </div>
-</div> -->
-
 <div [style.height.px]="height - 15">
-    <as-split direction="vertical">
-        <as-split-area size="65">
-            <as-split direction="horizontal">
-                <as-split-area size="{{sizeListadoDirectorios}}">
+    <as-split direction="vertical" unit="percent" (dragEnd)="onDragEnd(-1, $event)" class="rounted">
+        <as-split-area [size]="configSplit.rows[0].size" class="rounted">
+            <as-split unit="percent" direction="horizontal" (dragEnd)="onDragEnd(0, $event)">
+                <as-split-area [size]="configSplit.rows[0].columns[0].size" [minSize]="minSizeListadoDirectorios">
                     <app-listado-directorios></app-listado-directorios>
                 </as-split-area>
-                <as-split-area size="{{100 - sizeListadoDirectorios}}">
+                <as-split-area [size]="configSplit.rows[0].columns[1].size">
                     <app-editor></app-editor>
                 </as-split-area>
-
             </as-split>
         </as-split-area>
-        <as-split-area size="35">
+        <as-split-area [size]="configSplit.rows[1].size" class="rounted">
             <as-split direction="horizontal" class="pr-1">
                 <as-split-area size="100">
                     <app-panel></app-panel>
@@ -38,26 +19,3 @@
         </as-split-area>
     </as-split>
 </div>
-
-<!-- <div style=" height: 500px;">
-    <as-split direction="vertical">
-        <as-split-area size="60">
-            <as-split direction="horizontal">
-                <as-split-area size="20">
-                    <h1>TEXTO NUMERO 1</h1>
-                </as-split-area>
-                <as-split-area size="80">
-                    <h1>TEXTO NUMERO 2</h1>
-                </as-split-area>
-
-            </as-split>
-        </as-split-area>
-        <as-split-area size="40">
-            <as-split direction="horizontal">
-                <as-split-area size="100">
-                    <h1>TEXTO NUMERO 4</h1>
-                </as-split-area>
-            </as-split>
-        </as-split-area>
-    </as-split>
-</div> -->

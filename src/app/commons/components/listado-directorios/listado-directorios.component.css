@@ -52,9 +52,6 @@ span.path{
     white-space: nowrap;
 }
 
-
-
-
 li {
     margin-left: 0px !important;
 }
@@ -73,7 +70,10 @@ li {
 
 .mat-tree-node{
     min-height: 0px;
+    cursor: pointer;
 }
+
+
 .mat-tree-node:hover{
     background: rgba(255, 255, 255, 0.03) !important ;   
 }

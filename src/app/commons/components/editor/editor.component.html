@@ -5,10 +5,12 @@
                 <div style="margin-left: 30px;">
 
                 </div>
-                <a class="nav-item nav-link py-1" data-toggle="tab" href="#" *ngIf="fileOpen != null"
+                <a class="nav-item nav-link py-1 pr-2 " data-toggle="tab" href="#" *ngIf="fileOpen != null"
                     (click)="codeViewClick('FILE_OPEN')" [ngClass]="{'active': isView('FILE_OPEN')}">
+                    <i class="material-icons md-12" *ngIf="!isSaved">fiber_manual_record</i>
                     <span> {{fileOpen.nombre}}</span>
-                    <button type="button" class="close text-white pl-2" aria-label="Close" (click)="closeCode()">
+                    <button type="button" class="close text-white pl-2 md-16 pt-1" aria-label="Close"
+                        (click)="closeCode()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </a>
