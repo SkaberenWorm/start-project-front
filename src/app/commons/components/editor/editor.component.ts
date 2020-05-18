@@ -3,15 +3,13 @@ import { ArchivoModel } from '../../models/archivo.model';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducer';
-import { ConfigService } from '../../services/config.service';
-import { setFileOpen } from 'src/app/store/actions/lectura.actions';
+import { setOpenCode } from 'src/app/store/actions/environment.actions';
+import { setOpenFile } from 'src/app/store/actions/lectura.actions';
 
 
 export enum codigo {
   FILE_OPEN, ENTIDAD, CONTROLADOR, SERVICIO, REPOSITORIO
 }
-
-
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
@@ -24,52 +22,82 @@ export class EditorComponent implements OnInit, OnDestroy {
   public selectedView = codigo.ENTIDAD;
 
   public fileOpen: ArchivoModel = null;
+  public filePreview: ArchivoModel = null;
 
-  private _subscription: Subscription;
+  private _subscriptionLectura: Subscription;
+  private _subscriptionEnviroment: Subscription;
 
 
   private mode = '';
-
   public codeMirrorOptions: any = {};
-
   public isSaved = true;
-
-
-
+  public esPreview = true;
 
 
   constructor(
     private store: Store<AppState>,
-    private config: ConfigService
+    // private configService: ConfigService,
+    // private actionService: ActionService,
   ) { }
 
   ngOnDestroy() {
-    this._subscription.unsubscribe();
+    this._subscriptionLectura.unsubscribe();
+    this._subscriptionEnviroment.unsubscribe();
   }
 
   ngOnInit(): void {
+    // this.store.dispatch(setOpenCode({ openCode: codigo.ENTIDAD }));
+    // console.warn('this.store.dispatch(setOpenCode({ openCode: codigo.ENTIDAD }));');
     this.setCodeMirrorOptions();
 
-    this._subscription = this.store.select('lectura').subscribe(state => {
+    this._subscriptionEnviroment = this.store.select('environment').subscribe(state => {
+      // Lo seteamos solo cuando es un archivo abierto, ya que los preview los consultamos desde el Panel
+      if (state.openCode == codigo.FILE_OPEN) {
+        this.selectedView = state.openCode;
+        // this.code = "";
+      }
+    });
 
-      if (state.file != null && state.file != this.fileOpen) {
-        this.selectedView = codigo.FILE_OPEN;
-        this.code = state.file.contenido;
+    this._subscriptionLectura = this.store.select('lectura').subscribe(state => {
+
+      this.code = "";
+
+      if (state.previewFile != null) {
+        this.esPreview = true;
+        this.setMode(state.previewFile.nombre);
+        this.filePreview = state.previewFile;
+        if (this.selectedView != codigo.FILE_OPEN) {
+          this.filePreview.nombre == '' ? this.code = "" : this.code = this.filePreview.contenido;
+        }
       }
 
-      this.fileOpen = state.file;
-
-      if (this.fileOpen != null) {
-        this.setMode(state.file.nombre);
+      if (state.openFile != null) {
+        this.esPreview = false;
+        this.setMode(state.openFile.nombre);
+        this.fileOpen = state.openFile;
+        console.log(this.selectedView);
+        if (this.selectedView == codigo.FILE_OPEN) {
+          this.fileOpen.nombre == '' ? this.code = "" : this.code = this.fileOpen.contenido;
+        }
+        // this.selectedView == codigo.FILE_OPEN
       }
+
+
+
+      console.log(state);
 
     });
 
+
+
+
+
   }
+
 
   setMode(fileName: string) {
     let extension = fileName;
-    Array.from(Array(5)).forEach(i => {
+    Array.from(Array(5)).forEach(() => {
       extension = extension.substring(extension.indexOf('.'), extension.length);
     });
     extension = extension.replace('.', '');
@@ -138,38 +166,33 @@ export class EditorComponent implements OnInit, OnDestroy {
 
 
   saveCode() {
-    this.isSaved = true;
-    this.fileOpen.contenido = this.codeEdited;
-    this.store.dispatch(setFileOpen({ file: this.fileOpen }));
-    console.log('save');
-  }
-
-  codeViewClick(selected: string) {
-    this.code = "";
-    switch (selected) {
-      case 'FILE_OPEN':
-        this.selectedView = codigo.FILE_OPEN;
-        this.code = this.fileOpen.contenido;
-        break;
-      case 'ENTIDAD':
-        this.selectedView = codigo.ENTIDAD;
-        break;
-      case 'CONTROLADOR':
-        this.selectedView = codigo.CONTROLADOR;
-        break;
-      case 'SERVICIO':
-        this.selectedView = codigo.SERVICIO;
-        break;
-      case 'REPOSITORIO':
-        this.selectedView = codigo.REPOSITORIO;
-        break;
-      default:
-        this.selectedView = codigo.ENTIDAD;
-        break;
+    if (!this.esPreview) {
+      this.isSaved = true;
+      this.fileOpen.contenido = this.codeEdited;
+      this.store.dispatch(setOpenFile({ file: this.fileOpen }));
+      console.warn('this.store.dispatch(setOpenFile({ file: this.fileOpen }));');
+      console.log('save');
     }
   }
 
+  /**
+   * Setea el código a ver (Entidad, repositorio, etc.)
+   * @param selected 
+   */
+  codeViewClick(selected: string) {
+    // this.code = "";
+    this.selectedView = this.textToEnum(selected);
+    this.store.dispatch(setOpenCode({ openCode: this.selectedView }));
+    console.warn('this.store.dispatch(setOpenCode({ openCode: selected }));');
+
+  }
+
+  /**
+   * 
+   * @param selected 
+   */
   isView(selected: string) {
+    console.log(selected);
     switch (selected) {
       case 'FILE_OPEN':
         return this.selectedView == codigo.FILE_OPEN;
@@ -189,16 +212,36 @@ export class EditorComponent implements OnInit, OnDestroy {
   closeCode(): void {
     this.code = "";
     this.fileOpen = null;
-    this.store.dispatch(setFileOpen({ file: null }));
+    this.store.dispatch(setOpenFile({ file: null }));
+    console.log('this.store.dispatch(setOpenFile({ file: null }));');
   }
 
   setEditorContent(codigo: string) {
     console.log(codigo);
     this.codeEdited = codigo;
-    if (codigo != this.fileOpen.contenido) {
-      this.isSaved = false;
-    } else {
-      this.isSaved = true;
+    if (this.fileOpen != null) {
+      if (codigo != this.fileOpen.contenido) {
+        this.isSaved = false;
+      } else {
+        this.isSaved = true;
+      }
+    }
+  }
+
+  textToEnum(selected: string) {
+    switch (selected) {
+      case 'FILE_OPEN':
+        return codigo.FILE_OPEN;
+      case 'ENTIDAD':
+        return codigo.ENTIDAD;
+      case 'CONTROLADOR':
+        return codigo.CONTROLADOR;
+      case 'SERVICIO':
+        return codigo.SERVICIO;
+      case 'REPOSITORIO':
+        return codigo.REPOSITORIO;
+      default:
+        return codigo.ENTIDAD;
     }
   }
 

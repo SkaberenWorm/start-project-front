@@ -9,7 +9,7 @@ import { UtilValidation } from './util/util.validation';
 import { BlockUIModule } from 'ng-block-ui';
 import { BlockUIHttpModule } from 'ng-block-ui/http';
 import { NgbPaginationModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { MatSelectModule, MatInputModule, MatExpansionModule, MatTreeModule, MatIconModule } from '@angular/material';
+import { MatSelectModule, MatInputModule, MatExpansionModule, MatTreeModule, MatIconModule, MatFormFieldModule } from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UtilAlert } from './util/util-alert';
 import { DirectorioService } from './services/directorio.service';
@@ -19,6 +19,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditorComponent } from './components/editor/editor.component';
 import { PanelComponent } from './components/panel/panel.component';
 import { AngularSplitModule } from 'angular-split';
+import { ActionService } from './services/action.service';
+import { LecturaService } from './services/lectura.service';
 @NgModule({
   declarations: [ListadoDirectoriosComponent, EditorComponent, PanelComponent],
   imports: [
@@ -37,14 +39,17 @@ import { AngularSplitModule } from 'angular-split';
     MatTreeModule,
     MatIconModule,
     CodemirrorModule,
-    AngularSplitModule.forRoot()
+    AngularSplitModule.forRoot(),
+    MatFormFieldModule
   ],
   providers: [
     Util,
     UtilFormating,
     UtilValidation,
     UtilAlert,
-    DirectorioService
+    DirectorioService,
+    ActionService,
+    LecturaService
   ],
   exports: [ListadoDirectoriosComponent, EditorComponent, PanelComponent]
 })

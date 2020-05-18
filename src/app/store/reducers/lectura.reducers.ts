@@ -4,17 +4,26 @@ import { Action } from '@ngrx/store';
 import { ArchivoModel } from 'src/app/commons/models/archivo.model';
 
 export interface LecturaState {
-    file: ArchivoModel,
+    openFile: ArchivoModel,
+    previewFile: ArchivoModel,
 }
 
 export const initialState: LecturaState = {
-    file: null,
+    openFile: null,
+    previewFile: null
 }
 const _lecturaReducer = createReducer(initialState,
 
-    on(fromActions.setFileOpen, (state, { file }) => ({
+    on(fromActions.setOpenFile, (state, { file }) => ({
         ...state,
-        file: file,
+        openFile: file,
+    })),
+    on(fromActions.setPreviewFile, (state, { file }) => ({
+        ...state,
+        previewFile: file,
+    })),
+    on(fromActions.refreshFiles, (state) => ({
+        ...state,
     })),
 
 );

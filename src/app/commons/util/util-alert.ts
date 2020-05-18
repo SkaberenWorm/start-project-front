@@ -13,6 +13,16 @@ export class UtilAlert {
     });
   }
 
+  errorSwalTopRight(mensaje: string) {
+    Swal.fire({
+      timer: 2000,
+      position: 'top-end',
+      type: 'error',
+      html: mensaje,
+      showConfirmButton: false,
+    });
+  }
+
   warningSwal(mensaje: string) {
     Swal.fire({
       type: 'warning',

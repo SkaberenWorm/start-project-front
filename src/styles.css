@@ -513,11 +513,12 @@ span.cerrar:hover {
 /**************************************/
 .as-split-gutter-icon{
   background-color: #212121;
-  flex-basis: 5px !important;
+  /* background-image: none !important; */
 }
 
 .as-split-gutter{
   flex-basis: 5px !important;
+  background-color: transparent !important;
 }
 
 as-split-area.rounted {
@@ -544,3 +545,41 @@ as-split.rounted {
 
 .material-icons.md-12 { font-size: 12px; }
 
+/******** MATERIAL ************/
+.mat-form-field-empty.mat-form-field-label {
+  color: #b9b9b9
+}
+
+.mat-form-field-underline {
+  background-color: orange !important;
+}
+
+/* Color del label cuando ya hay algo escrito y no hay focus */
+.mat-form-field-appearance-legacy .mat-form-field-label{
+  color: rgb(228, 133, 56) !important;
+}
+/* Color del texto */
+input.mat-input-element {
+  color: orange !important;
+}
+/* Color del label cuando se esta escribiendo */
+.mat-form-field.mat-focused .mat-form-field-label {
+  color: orange !important;
+}
+/* Color de los border del input */
+.mat-focused .mat-form-field-underline .mat-form-field-ripple{
+  background-color: orange !important;
+} 
+
+
+/******* SWAL2 ****/
+.swal2-popup,
+.swal2-modal,
+.swal2-show{
+  background: #343a40 !important;
+}
+
+.swal2-content,
+.swal2-title {
+  color: #b9b9b9 !important;
+}

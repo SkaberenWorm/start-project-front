@@ -1,97 +1,35 @@
 <div class="card text-white bg-dark m-0 w-100 h-100 mr-4">
     <div class="card-header">
-        <code>
-            <span class="text-orange">Package</span>
-            <span class="text-white">{{package}}</span>
-        </code>
+        <div class="row">
+            <div class="col-sm-6">
+                <code>
+                    <span class="text-orange">Package&nbsp;</span>
+                    <span class="text-white">{{packageBase}}</span>
+                </code>
+            </div>
+            <div class="col-sm-6 text-right">
+                <span style="font-size: 30px;" class="mt-2"> {{pathValido?'👌': '🤨'}} </span>
+            </div>
+        </div>
     </div>
-    <div class="card-body bg-dark-body p-0">
-        <as-split gutterSize="30" (dragEnd)="log($event)">
-
-            <as-split-area size="30">
-                <as-split unit="pixel" direction="horizontal" disabled="false">
-                    <as-split-area size="25" minSize="25" maxSize="25">
-                        <div class="inline">
-                            <div class="split-header float-left h-100">
-                                <div class="">1</div>
-                                <div class="mt-auto center">
-                                    <span class="verticaltext path">PACKAGES</span>
-                                </div>
-                            </div>
-                        </div>
-                    </as-split-area>
-                    <as-split-area size="100" minSize="25">
-                        <h1>A</h1>
-                    </as-split-area>
-                </as-split>
-
-            </as-split-area>
-
-            <as-split-area size="70">
-                <as-split unit="pixel" direction="horizontal" disabled="true">
-                    <as-split-area size="25" minSize="25" maxSize="25">
-                        <div class="inline">
-                            <div class="split-header float-left h-100">
-                                <div class="">1</div>
-                                <div class="mt-auto center">
-                                    <span class="verticaltext path">PACKAGES</span>
-                                </div>
-                            </div>
-                        </div>
-                    </as-split-area>
-                    <as-split-area size="*">
-                        <h1>B</h1>
-                    </as-split-area>
-                </as-split>
-
-            </as-split-area>
-
-
-            <!-- <as-split-area size="25" minSize="25" maxSize="25">
-                <div class="inline">
-                    <div class="split-header float-left h-100">
-                        <div class="">1</div>
-                        <div class="mt-auto center">
-                            <span class="verticaltext path">PACKAGES</span>
-                        </div>
-                    </div>
-                </div>
-            </as-split-area>
-
-            <as-split-area size="*">
-                <h1>A</h1>
-            </as-split-area>
-
-            <as-split-area size="25" minSize="25" maxSize="25">
-                <div class="inline">
-                    <div class="split-header float-left h-100">
-                        <div class="">1</div>
-                        <div class="mt-auto center">
-                            <span class="verticaltext path">PACKAGES</span>
-                        </div>
-                    </div>
-                </div>
-            </as-split-area>
-
-            <as-split-area size="*">
-                <h1>B</h1>
-            </as-split-area> -->
-
-
-            <!-- <as-split-area size="200" minSize="100">
-
-                <div class="inline">
-                    <div class="split-header float-left h-100">
-                        <div class="">1</div>
-                        <div class="mt-auto center">
-                            <span class="verticaltext path">PACKAGES</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="inline">
-                    <span class="">B</span>
-                </div>
-            </as-split-area> -->
-        </as-split>
+    <div class="card-body bg-dark-body ">
+        <div class="row">
+            <div class="col-sm-12">
+                <form [formGroup]="formularioEntidad">
+                    <mat-form-field class="text-white">
+                        <mat-label>Nombre clase</mat-label>
+                        <input matInput value="" formControlName="nombre" autocomplete="off"
+                            (keyup)="previewCode($event.target.value)">
+                    </mat-form-field>
+                </form>
+                <b>
+                    <span>ENTIDAD: {{entidadName}} </span><br>
+                    <span>BASE: {{packageBase}} </span><br>
+                </b>
+            </div>
+            <div class="col-sm-12 text-right">
+                <button type="button" class="btn btn-primary btn-sm ml-auto" (click)="crearArchivos()">Crear</button>
+            </div>
+        </div>
     </div>
 </div>

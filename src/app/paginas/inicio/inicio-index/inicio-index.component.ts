@@ -3,27 +3,33 @@ import { Subscription } from 'rxjs';
 import { ConfigService } from 'src/app/commons/services/config.service';
 
 interface IConfig {
-  rows: Array<{
+  columns: Array<{
     size: number,
-    columns: Array<{
-      size: number
+    minSize: number,
+    rows: Array<{
+      size: number,
+      minSize: number,
     }>
   }>
 }
 
 const defaultConfig: IConfig = {
-  rows: [
+  columns: [
     {
-      size: 65,
-      columns: [
-        { size: (300 * 100 / window.innerWidth) },
-        { size: (100 - (300 * 100 / window.innerWidth)) }
+      size: (300 * 100 / window.innerWidth),
+      minSize: (250 * 100 / window.innerWidth),
+      rows: [
+        { size: 50, minSize: 40 },
+        { size: 25, minSize: 25 },
+        { size: 25, minSize: 25 },
       ]
     },
     {
-      size: 35,
-      columns: [
-        { size: 100 }
+      size: (100 - (300 * 100 / window.innerWidth)),
+      minSize: 0,
+      rows: [
+        { size: 60, minSize: 0 },
+        { size: 40, minSize: 0 }
       ]
     }
 
@@ -71,23 +77,21 @@ export class InicioIndexComponent implements OnInit, OnDestroy {
   setSizes() {
     this.height = window.innerHeight;
     this.width = window.innerWidth;
-    this.sizeListadoDirectorios = 300 * 100 / this.width;
+    this.sizeListadoDirectorios = 350 * 100 / this.width;
     this.minSizeListadoDirectorios = 250 * 100 / this.width;
-    console.log(this.minSizeListadoDirectorios);
   }
 
   resetConfig() {
     this.configSplit = defaultConfig;
-
     localStorage.removeItem(this.localStorageSplitIndex);
   }
 
   onDragEnd(rowIndex: number, e: { gutterNum: number, sizes: Array<number> }) {
     if (rowIndex === -1) {
-      this.configSplit.rows.forEach((row, index) => row.size = e.sizes[index]);
+      this.configSplit.columns.forEach((row, index) => row.size = e.sizes[index]);
     }
     else {
-      this.configSplit.rows[rowIndex].columns.forEach((colum, index) => colum.size = e.sizes[index]);
+      this.configSplit.columns[rowIndex].rows.forEach((row, index) => row.size = e.sizes[index]);
     }
     this.saveLocalStorage();
   }

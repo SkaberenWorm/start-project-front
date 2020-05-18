@@ -1,19 +1,17 @@
 <div [style.height.px]="height - 15">
-    <as-split direction="vertical" unit="percent" (dragEnd)="onDragEnd(-1, $event)" class="rounted">
-        <as-split-area [size]="configSplit.rows[0].size" class="rounted">
-            <as-split unit="percent" direction="horizontal" (dragEnd)="onDragEnd(0, $event)">
-                <as-split-area [size]="configSplit.rows[0].columns[0].size" [minSize]="minSizeListadoDirectorios">
-                    <app-listado-directorios></app-listado-directorios>
-                </as-split-area>
-                <as-split-area [size]="configSplit.rows[0].columns[1].size">
-                    <app-editor></app-editor>
-                </as-split-area>
-            </as-split>
-        </as-split-area>
-        <as-split-area [size]="configSplit.rows[1].size" class="rounted">
-            <as-split direction="horizontal" class="pr-1">
-                <as-split-area size="100">
-                    <app-panel></app-panel>
+    <as-split direction="horizontal" unit="percent" (dragEnd)="onDragEnd(-1, $event)" class="rounted">
+        <as-split-area *ngFor="let colum of configSplit.columns; let indexColumn = index;" [size]="colum.size"
+            [minSize]="colum.minSize" class="rounted" [ngClass]="{'add-padding-bottom': indexColumn==0}">
+            <as-split unit="{{indexColumn==0?'pixel':'porcent'}}" direction="vertical"
+                (dragEnd)="onDragEnd(indexColumn, $event)">
+                <as-split-area *ngFor="let row of colum.rows; let indexRow = index;" [size]="row.size" class="rounted"
+                    [minSize]="row.minSize">
+                    <app-listado-directorios *ngIf="indexColumn == 0 && indexRow == 0"></app-listado-directorios>
+                    <app-editor *ngIf="indexColumn == 1 && indexRow == 0"></app-editor>
+                    <app-panel *ngIf="indexColumn == 1 && indexRow == 1"></app-panel>
+                    <div class="card bg-dark-body h-100 p-0 m-0"
+                        *ngIf="indexColumn == 0 && (indexRow == 1 || indexRow == 2)">
+                    </div>
                 </as-split-area>
             </as-split>
         </as-split-area>

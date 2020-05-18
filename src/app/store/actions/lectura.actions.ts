@@ -7,7 +7,17 @@ export const openFile = createAction(
     props<{ filePath: string }>()
 );
 
-export const setFileOpen = createAction(
+export const setOpenFile = createAction(
     '[LECTURA] Set open file',
     props<{ file: ArchivoModel }>()
 );
+
+export const setPreviewFile = createAction(
+    '[LECTURA] Set preview file',
+    props<{ file: ArchivoModel }>()
+);
+
+export const refreshFiles = createAction('[LECTURA] Refresh files');
+
+
+

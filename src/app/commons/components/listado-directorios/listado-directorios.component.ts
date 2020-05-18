@@ -6,10 +6,11 @@ import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material';
 import { LecturaService } from '../../services/lectura.service';
 import { AppState } from 'src/app/store/app.reducer';
 import { Store } from '@ngrx/store';
-import { setFileOpen } from 'src/app/store/actions/lectura.actions';
-import { ConfigService } from '../../services/config.service';
 import { setCurrentDirectory } from 'src/app/store/actions/directorio.actions';
 import { Subscription } from 'rxjs';
+import { setPathBase, setOpenCode } from 'src/app/store/actions/environment.actions';
+import { setOpenFile } from 'src/app/store/actions/lectura.actions';
+import { codigo } from '../editor/editor.component';
 
 
 interface ExampleFlatNode {
@@ -84,7 +85,7 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
     }
     this.cargarDirectorios();
     this._subscription = this.store.select('lectura').subscribe(state => {
-      if (state.file == null) {
+      if (state.openFile == null) {
         this.unSelectedAllFiles();
       }
     });
@@ -112,11 +113,16 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
         this.dirBack = this.directorios[0];
         this.dirActual = this.directorios[1];
         localStorage.setItem(this.localStorageLastPath, btoa(this.dirActual.path));
+        this.dirActual.directorios = this.directorios;
         this.store.dispatch(setCurrentDirectory({ dir: this.dirActual }));
+        this.store.dispatch(setPathBase({ pathBase: this.dirActual.path }));
+        console.warn('this.store.dispatch(setCurrentDirectory({ dir: this.dirActual }));');
+        console.warn('this.store.dispatch(setPathBase({ pathBase: this.dirActual.path }));');
       }
 
       // Quitamos los directerios de la lista (Directorio actual, directorio anterior)
       this.directorios.splice(0, 2);
+
       this.dataSource.data = this.directorios;
       this.desplegarLista();
       this.activarArchivoSeleccioado();
@@ -193,7 +199,10 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
     node.isSelectedFile = true;
     this.nodeSelected = node;
     this.lecturaService.leerFile(node.path).subscribe(result => {
-      this.store.dispatch(setFileOpen({ file: result }));
+      this.store.dispatch(setOpenCode({ openCode: codigo.FILE_OPEN }));
+      this.store.dispatch(setOpenFile({ file: result }));
+      console.warn('this.store.dispatch(setOpenCode({ openCode: codigo.FILE_OPEN }));');
+      console.warn('this.store.dispatch(setOpenFile({ file: result }));');
     });
   }
 
@@ -229,5 +238,6 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
     this.treeControl.collapseAll();
     this.directoriosDesplegados = [];
   }
+
 
 }
