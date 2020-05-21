@@ -20,7 +20,6 @@ import { EditorComponent } from './components/editor/editor.component';
 import { PanelComponent } from './components/panel/panel.component';
 import { AngularSplitModule } from 'angular-split';
 import { ActionService } from './services/action.service';
-import { LecturaService } from './services/lectura.service';
 @NgModule({
   declarations: [ListadoDirectoriosComponent, EditorComponent, PanelComponent],
   imports: [
@@ -49,7 +48,6 @@ import { LecturaService } from './services/lectura.service';
     UtilAlert,
     DirectorioService,
     ActionService,
-    LecturaService
   ],
   exports: [ListadoDirectoriosComponent, EditorComponent, PanelComponent]
 })

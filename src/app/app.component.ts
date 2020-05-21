@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { AppState } from 'src/app/store/app.reducer';
 import { Store } from '@ngrx/store';
+import { UpdateAvailableEvent, SwUpdate } from '@angular/service-worker';
 @Component({
   selector: 'app-my-app',
   templateUrl: './app.component.html'
@@ -18,10 +19,20 @@ import { Store } from '@ngrx/store';
 export class AppComponent implements OnInit, OnDestroy {
   private _router: Subscription;
 
+
   constructor(
     private router: Router,
     public store: Store<AppState>,
-  ) { }
+    private swUpdate: SwUpdate
+  ) {
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.available.subscribe((event: UpdateAvailableEvent) => {
+        // if (confirm(`Do you want to update?`)) {
+        window.location.reload();
+        // }
+      });
+    }
+  }
   @BlockUI() blockUI: NgBlockUI;
 
   ngOnDestroy() {

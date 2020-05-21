@@ -26,8 +26,7 @@
         <div class="scroll-y hidden-scrolls list-dir p-1 ">
             <mat-tree #tree [dataSource]="dataSource" [treeControl]="treeControl">
                 <!-- This is the tree node template for leaf nodes -->
-                <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding matTreeNodePaddingIndent="10"
-                    (click)="node.isFile? verFile(node) : '' ">
+                <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding matTreeNodePaddingIndent="10">
                     <!-- use a disabled button to provide padding for tree leaf -->
                     <button mat-icon-button class="p-0 button-transparent ">
                         <mat-icon class="mat-icon-rtl-mirror icon text-muted">

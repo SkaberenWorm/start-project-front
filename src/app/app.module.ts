@@ -89,7 +89,8 @@ export class MaterialModule { }
       logOnly: environment.production // Restrict extension to log-only mode
     }),
     BlockUIModule.forRoot(),
-    CodemirrorModule
+    CodemirrorModule,
+    EffectsModule.forRoot(appEffect),
   ],
   providers: [
     {

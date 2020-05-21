@@ -4,11 +4,12 @@
             <div class="col-sm-6">
                 <code>
                     <span class="text-orange">Package&nbsp;</span>
-                    <span class="text-white">{{packageBase}}</span>
+                    <span class="text-white" *ngIf="directorioBase.pathValid">{{directorioBase.packageBase}}</span>
+                    <span class="text-white" *ngIf="!directorioBase.pathValid"> No se ha encontrado el package principal </span>
                 </code>
             </div>
             <div class="col-sm-6 text-right">
-                <span style="font-size: 30px;" class="mt-2"> {{pathValido?'👌': '🤨'}} </span>
+                <span style="font-size: 30px;" class="mt-2"> {{directorioBase.pathValid?'👌': '🤨'}} </span>
             </div>
         </div>
     </div>
@@ -24,11 +25,12 @@
                 </form>
                 <b>
                     <span>ENTIDAD: {{entidadName}} </span><br>
-                    <span>BASE: {{packageBase}} </span><br>
+                    <span>BASE: {{directorioBase.packageBase}} </span><br>
                 </b>
             </div>
             <div class="col-sm-12 text-right">
                 <button type="button" class="btn btn-primary btn-sm ml-auto" (click)="crearArchivos()">Crear</button>
+
             </div>
         </div>
     </div>

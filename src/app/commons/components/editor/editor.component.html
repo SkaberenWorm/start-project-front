@@ -5,9 +5,8 @@
                 <div style="margin-left: 30px;">
 
                 </div>
-                <a class="nav-item nav-link py-1 pr-2 " data-toggle="tab" href="#"
-                    *ngIf="fileOpen != null && !esPreview" (click)="codeViewClick('FILE_OPEN')"
-                    [ngClass]="{'active': selectedView==0}">
+                <a class="nav-item nav-link py-1 pr-2 " data-toggle="tab" href="#" *ngIf="fileOpen != null"
+                    (click)="codeViewClick('FILE_OPEN')" [ngClass]="{'active': selectedTab==0}">
                     <i class="material-icons md-12" *ngIf="!isSaved">fiber_manual_record</i>
                     <span> {{fileOpen.nombre}}</span>
                     <button type="button" class="close text-white pl-2 md-16 pt-1" aria-label="Close"
@@ -15,19 +14,19 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </a>
-                <a class="nav-item nav-link py-1" data-toggle="tab" href="#" [ngClass]="{'active': selectedView==1}"
+                <a class="nav-item nav-link py-1" data-toggle="tab" href="#" [ngClass]="{'active': selectedTab==1}"
                     (click)="codeViewClick('ENTIDAD')">
                     <span> ENTIDAD</span>
                 </a>
-                <a class="nav-item nav-link py-1" data-toggle="tab" href="#" [ngClass]="{'active': selectedView==2}"
+                <a class="nav-item nav-link py-1" data-toggle="tab" href="#" [ngClass]="{'active': selectedTab==2}"
                     (click)="codeViewClick('CONTROLADOR')">
                     <span> CONTROLADOR</span>
                 </a>
-                <a class="nav-item nav-link py-1" data-toggle="tab" href="#" [ngClass]="{'active': selectedView==3}"
+                <a class="nav-item nav-link py-1" data-toggle="tab" href="#" [ngClass]="{'active': selectedTab==3}"
                     (click)="codeViewClick('SERVICIO')">
                     <span> SERVICIO</span>
                 </a>
-                <a class="nav-item nav-link py-1" data-toggle="tab" href="#" [ngClass]="{'active': selectedView==4}"
+                <a class="nav-item nav-link py-1" data-toggle="tab" href="#" [ngClass]="{'active': selectedTab==4}"
                     (click)="codeViewClick('REPOSITORIO')">
                     <span> REPOSITORIO</span>
                 </a>

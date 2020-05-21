@@ -3,14 +3,11 @@ import { DirectorioModel } from '../../models/directorio.model';
 import { DirectorioService } from '../../services/directorio.service';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material';
-import { LecturaService } from '../../services/lectura.service';
 import { AppState } from 'src/app/store/app.reducer';
 import { Store } from '@ngrx/store';
-import { setCurrentDirectory } from 'src/app/store/actions/directorio.actions';
 import { Subscription } from 'rxjs';
-import { setPathBase, setOpenCode } from 'src/app/store/actions/environment.actions';
-import { setOpenFile } from 'src/app/store/actions/lectura.actions';
-import { codigo } from '../editor/editor.component';
+import { readSelectedFile } from 'src/app/store/actions/archivo.actions';
+import { setDirectorioBase } from 'src/app/store/actions/directorio.actions';
 
 
 interface ExampleFlatNode {
@@ -67,7 +64,6 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
 
   constructor(
     private directorioService: DirectorioService,
-    private lecturaService: LecturaService,
     private store: Store<AppState>,
   ) {
 
@@ -80,11 +76,14 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
+    // Traemos el último path del localStorage
     if (localStorage.getItem(this.localStorageLastPath)) {
       this.path = atob(localStorage.getItem(this.localStorageLastPath));
     }
+
     this.cargarDirectorios();
-    this._subscription = this.store.select('lectura').subscribe(state => {
+
+    this._subscription = this.store.select('archivo').subscribe(state => {
       if (state.openFile == null) {
         this.unSelectedAllFiles();
       }
@@ -113,11 +112,8 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
         this.dirBack = this.directorios[0];
         this.dirActual = this.directorios[1];
         localStorage.setItem(this.localStorageLastPath, btoa(this.dirActual.path));
-        this.dirActual.directorios = this.directorios;
-        this.store.dispatch(setCurrentDirectory({ dir: this.dirActual }));
-        this.store.dispatch(setPathBase({ pathBase: this.dirActual.path }));
-        console.warn('this.store.dispatch(setCurrentDirectory({ dir: this.dirActual }));');
-        console.warn('this.store.dispatch(setPathBase({ pathBase: this.dirActual.path }));');
+        this.store.dispatch(setDirectorioBase({ dir: this.dirActual }));
+        console.warn('cargarDirectorios() => setPathBase');
       }
 
       // Quitamos los directerios de la lista (Directorio actual, directorio anterior)
@@ -162,6 +158,7 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
    * @param path Path completo del directorio que desea cerrar
    */
   cerrar(path: string) {
+    console.log('cerrar');
     for (let index = 0; index < this.directoriosDesplegados.length; index++) {
       const dir = this.directoriosDesplegados[index];
       if (dir == path) {
@@ -198,16 +195,17 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
     this.unSelectedAllFiles();
     node.isSelectedFile = true;
     this.nodeSelected = node;
-    this.lecturaService.leerFile(node.path).subscribe(result => {
-      this.store.dispatch(setOpenCode({ openCode: codigo.FILE_OPEN }));
-      this.store.dispatch(setOpenFile({ file: result }));
-      console.warn('this.store.dispatch(setOpenCode({ openCode: codigo.FILE_OPEN }));');
-      console.warn('this.store.dispatch(setOpenFile({ file: result }));');
-    });
+    this.store.dispatch(readSelectedFile({ pathFile: node.path }));
+    // this.lecturaService.leerFile(node.path).subscribe(result => {
+    //   this.store.dispatch(setOpenCode({ openCode: codigo.FILE_OPEN }));
+    //   this.store.dispatch(setOpenFile({ file: result }));
+    //   console.warn('verFile() => setOpenCode');
+    //   console.warn('verFile() => setOpenFile');
+    // });
   }
 
   /**
-   * Setea a false el atributo isSelectedFile de todos los nodos cargados
+   * Setea a false el atributo isSelectedFile de todos los archivos cargados
    */
   unSelectedAllFiles() {
     this.nodeSelected = null;

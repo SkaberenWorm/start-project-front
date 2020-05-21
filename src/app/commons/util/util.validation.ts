@@ -4,7 +4,7 @@ import { FormControl, FormGroup, AbstractControl } from '@angular/forms';
 import * as moment from 'moment';
 @Injectable()
 export class UtilValidation {
-  constructor(public utilFormating: UtilFormating) {}
+  constructor(public utilFormating: UtilFormating) { }
 
   static MatchPassword(AC: AbstractControl) {
     const password = AC.root.get('password').value; // to get value in input tag

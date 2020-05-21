@@ -3,11 +3,11 @@ import { ArchivoModel } from '../../models/archivo.model';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducer';
-import { setOpenCode } from 'src/app/store/actions/environment.actions';
-import { setOpenFile } from 'src/app/store/actions/lectura.actions';
+import { closeSelectedFile, changeTab, previewFile } from 'src/app/store/actions/archivo.actions';
+import { BaseArchivoModel } from '../../models/base-archivo.model';
 
 
-export enum codigo {
+export enum tabs {
   FILE_OPEN, ENTIDAD, CONTROLADOR, SERVICIO, REPOSITORIO
 }
 @Component({
@@ -19,13 +19,13 @@ export class EditorComponent implements OnInit, OnDestroy {
 
   public code = "";
   public codeEdited = "";
-  public selectedView = codigo.ENTIDAD;
+  public selectedTab = tabs.ENTIDAD;
 
   public fileOpen: ArchivoModel = null;
   public filePreview: ArchivoModel = null;
 
-  private _subscriptionLectura: Subscription;
-  private _subscriptionEnviroment: Subscription;
+  private _subscriptionArchivo: Subscription;
+  private _subscriptionDirectorio: Subscription;
 
 
   private mode = '';
@@ -33,63 +33,61 @@ export class EditorComponent implements OnInit, OnDestroy {
   public isSaved = true;
   public esPreview = true;
 
+  private baseArchivo: BaseArchivoModel = new BaseArchivoModel();
+
+  private isPackageValid = false;
+
 
   constructor(
     private store: Store<AppState>,
-    // private configService: ConfigService,
-    // private actionService: ActionService,
   ) { }
 
   ngOnDestroy() {
-    this._subscriptionLectura.unsubscribe();
-    this._subscriptionEnviroment.unsubscribe();
+    this._subscriptionDirectorio.unsubscribe();
+    this._subscriptionArchivo.unsubscribe();
   }
 
   ngOnInit(): void {
-    // this.store.dispatch(setOpenCode({ openCode: codigo.ENTIDAD }));
-    // console.warn('this.store.dispatch(setOpenCode({ openCode: codigo.ENTIDAD }));');
     this.setCodeMirrorOptions();
 
-    this._subscriptionEnviroment = this.store.select('environment').subscribe(state => {
-      // Lo seteamos solo cuando es un archivo abierto, ya que los preview los consultamos desde el Panel
-      if (state.openCode == codigo.FILE_OPEN) {
-        this.selectedView = state.openCode;
-        // this.code = "";
+    this._subscriptionDirectorio = this.store.select('directorio').subscribe(state => {
+      if (state.directorioBase != null && state.directorioBase.packageBase != null) {
+        this.isPackageValid = state.directorioBase.pathValid;
+        this.baseArchivo.packageBase = state.directorioBase.packageBase;
+      }
+      if (!this.isPackageValid) {
+        this.setMode("java");
+        this.code = "Debe estar dentro del package principal de la aplicación";
+      } else {
+        this.code = "";
       }
     });
 
-    this._subscriptionLectura = this.store.select('lectura').subscribe(state => {
+    this._subscriptionArchivo = this.store.select('archivo').subscribe(state => {
+      if (state.baseArchivo != null) {
+        this.baseArchivo = state.baseArchivo;
+      }
+      if (state.selectedTab != null) {
+        this.selectedTab = state.selectedTab;
+      } else {
+        console.error('selected Tab NULL');
+      }
 
-      this.code = "";
-
-      if (state.previewFile != null) {
-        this.esPreview = true;
+      if (state.loaded && state.selectedTab != tabs.FILE_OPEN && state.previewFile != null) {
         this.setMode(state.previewFile.nombre);
         this.filePreview = state.previewFile;
-        if (this.selectedView != codigo.FILE_OPEN) {
-          this.filePreview.nombre == '' ? this.code = "" : this.code = this.filePreview.contenido;
-        }
+        this.code = this.filePreview.contenido
+      } else if (!state.loading && !state.loaded && state.error != null) {
+        this.code = 'Problemas al intentar mostrar el código';
       }
 
-      if (state.openFile != null) {
-        this.esPreview = false;
+      if (state.selectedTab == tabs.FILE_OPEN && state.openFile != null) {
         this.setMode(state.openFile.nombre);
         this.fileOpen = state.openFile;
-        console.log(this.selectedView);
-        if (this.selectedView == codigo.FILE_OPEN) {
-          this.fileOpen.nombre == '' ? this.code = "" : this.code = this.fileOpen.contenido;
-        }
-        // this.selectedView == codigo.FILE_OPEN
+        this.code = this.fileOpen.contenido
       }
 
-
-
-      console.log(state);
-
     });
-
-
-
 
 
   }
@@ -135,7 +133,6 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.mode = 'text/x-java';
         break;
     }
-    // console.log(this.mode);
     this.setCodeMirrorOptions();
   }
 
@@ -168,9 +165,9 @@ export class EditorComponent implements OnInit, OnDestroy {
   saveCode() {
     if (!this.esPreview) {
       this.isSaved = true;
-      this.fileOpen.contenido = this.codeEdited;
-      this.store.dispatch(setOpenFile({ file: this.fileOpen }));
-      console.warn('this.store.dispatch(setOpenFile({ file: this.fileOpen }));');
+      // this.fileOpen.contenido = this.codeEdited;
+      // this.store.dispatch(setOpenFile({ file: this.fileOpen }));
+      // console.warn('this.store.dispatch(setOpenFile({ file: this.fileOpen }));');
       console.log('save');
     }
   }
@@ -180,11 +177,14 @@ export class EditorComponent implements OnInit, OnDestroy {
    * @param selected 
    */
   codeViewClick(selected: string) {
-    // this.code = "";
-    this.selectedView = this.textToEnum(selected);
-    this.store.dispatch(setOpenCode({ openCode: this.selectedView }));
-    console.warn('this.store.dispatch(setOpenCode({ openCode: selected }));');
-
+    if (this.isPackageValid) {
+      // this.code = "";
+      this.selectedTab = this.textToEnum(selected);
+      this.store.dispatch(changeTab({ tab: this.selectedTab }));
+      if (this.selectedTab != tabs.FILE_OPEN) {
+        this.store.dispatch(previewFile({ tipo: this.selectedTab, baseArchivo: this.baseArchivo }));
+      }
+    }
   }
 
   /**
@@ -192,28 +192,27 @@ export class EditorComponent implements OnInit, OnDestroy {
    * @param selected 
    */
   isView(selected: string) {
-    console.log(selected);
     switch (selected) {
       case 'FILE_OPEN':
-        return this.selectedView == codigo.FILE_OPEN;
+        return this.selectedTab == tabs.FILE_OPEN;
       case 'ENTIDAD':
-        return this.selectedView == codigo.ENTIDAD;
+        return this.selectedTab == tabs.ENTIDAD;
       case 'CONTROLADOR':
-        return this.selectedView == codigo.CONTROLADOR;
+        return this.selectedTab == tabs.CONTROLADOR;
       case 'SERVICIO':
-        return this.selectedView == codigo.SERVICIO;
+        return this.selectedTab == tabs.SERVICIO;
       case 'REPOSITORIO':
-        return this.selectedView == codigo.REPOSITORIO;
+        return this.selectedTab == tabs.REPOSITORIO;
       default:
         return false;
     }
   }
 
+  /**
+   * Cierra la pestaña del archivo seleccionado (tabs.FILE_OPEN)
+   */
   closeCode(): void {
-    this.code = "";
-    this.fileOpen = null;
-    this.store.dispatch(setOpenFile({ file: null }));
-    console.log('this.store.dispatch(setOpenFile({ file: null }));');
+    this.store.dispatch(closeSelectedFile());
   }
 
   setEditorContent(codigo: string) {
@@ -231,17 +230,17 @@ export class EditorComponent implements OnInit, OnDestroy {
   textToEnum(selected: string) {
     switch (selected) {
       case 'FILE_OPEN':
-        return codigo.FILE_OPEN;
+        return tabs.FILE_OPEN;
       case 'ENTIDAD':
-        return codigo.ENTIDAD;
+        return tabs.ENTIDAD;
       case 'CONTROLADOR':
-        return codigo.CONTROLADOR;
+        return tabs.CONTROLADOR;
       case 'SERVICIO':
-        return codigo.SERVICIO;
+        return tabs.SERVICIO;
       case 'REPOSITORIO':
-        return codigo.REPOSITORIO;
+        return tabs.REPOSITORIO;
       default:
-        return codigo.ENTIDAD;
+        return tabs.ENTIDAD;
     }
   }
 

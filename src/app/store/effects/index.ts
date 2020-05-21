@@ -1,8 +1,8 @@
 
-import { LecturaEffects } from './lectura.effects'
+import { ArchivoEffects } from './archivo.effects'
 
 export const appEffect: Array<any> = [
-    LecturaEffects
+    ArchivoEffects
 ];
 
 

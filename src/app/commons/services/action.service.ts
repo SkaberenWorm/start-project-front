@@ -5,11 +5,12 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { BaseArchivoModel } from '../models/base-archivo.model';
 import { ResultadoProc } from '../interfaces/resultado-proc.interface';
 import { ArchivoModel } from '../models/archivo.model';
-import { codigo } from '../components/editor/editor.component';
+import { tabs } from '../components/editor/editor.component';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducer';
 import { UtilAlert } from '../util/util-alert';
-import { setPreviewFile } from 'src/app/store/actions/lectura.actions';
+import { previewFile, previewFileSuccess, previewFileFail } from 'src/app/store/actions/archivo.actions';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -25,41 +26,82 @@ export class ActionService {
     private alert: UtilAlert
   ) { }
 
-  /*----------- ENTIDADES -----------*/
+  /*==========  CREATE ==========*/
   public crearEntidad(baseArchivo: BaseArchivoModel): Observable<ResultadoProc<ArchivoModel>> {
-    return this.http.post<ResultadoProc<ArchivoModel>>(`${this.urlBase}/create-entity`, baseArchivo, { headers: this.headers });
+    return this.http.post<ResultadoProc<ArchivoModel>>(`${this.urlBase}/create/entity`, baseArchivo, { headers: this.headers });
   }
+  /*==========  END CREATE ==========*/
+
+
+
+
+  /*==========  PREVIEW ==========*/
+
+  /**
+   * Muestra una vista previa del código que se insertará en el proyecto
+   * @param baseArchivo
+   */
   private vistaPreviaEntidad(baseArchivo: BaseArchivoModel): Observable<ResultadoProc<ArchivoModel>> {
-    return this.http.post<ResultadoProc<ArchivoModel>>(`${this.urlBase}/ver-entity-vista-previa`, baseArchivo, { headers: this.headers });
+    return this.http.post<ResultadoProc<ArchivoModel>>(`${this.urlBase}/preview/entity`, baseArchivo, { headers: this.headers });
+  }
+  private vistaPreviaControlador(baseArchivo: BaseArchivoModel): Observable<ResultadoProc<ArchivoModel>> {
+    return this.http.post<ResultadoProc<ArchivoModel>>(`${this.urlBase}/preview/controllador`, baseArchivo, { headers: this.headers });
+  }
+  private vistaPreviaServicio(baseArchivo: BaseArchivoModel): Observable<ResultadoProc<ArchivoModel>> {
+    return this.http.post<ResultadoProc<ArchivoModel>>(`${this.urlBase}/preview/servicio`, baseArchivo, { headers: this.headers });
+  }
+  private vistaPreviaRepositorio(baseArchivo: BaseArchivoModel): Observable<ResultadoProc<ArchivoModel>> {
+    return this.http.post<ResultadoProc<ArchivoModel>>(`${this.urlBase}/preview/repositorio`, baseArchivo, { headers: this.headers });
   }
 
-  /*----------- PREVIEW CODE -----------*/
-  public previewCode(codeOpen: number, baseArchivo: BaseArchivoModel) {
-    switch (codeOpen) {
-      case codigo.ENTIDAD:
 
-        this._subscription$ = this.vistaPreviaEntidad(baseArchivo).subscribe(
-          result => {
-            !result.error ? this.store.dispatch(setPreviewFile({ file: result.salida })) : this.alert.errorSwalTopRight(result.mensaje)
-            this._subscription$.unsubscribe();
-            console.warn('this.store.dispatch(setPreviewFile({ file: result.salida })');
-          }
-        );
-        break;
-      case codigo.SERVICIO:
-        this.store.dispatch(setPreviewFile({ file: null }))
-        console.warn('this.store.dispatch(setPreviewFile({ file: null }))');
-        break;
-      case codigo.REPOSITORIO:
-        this.store.dispatch(setPreviewFile({ file: null }))
-        console.warn('this.store.dispatch(setPreviewFile({ file: null }))');
-        break;
-      case codigo.CONTROLADOR:
-        this.store.dispatch(setPreviewFile({ file: null }))
-        console.warn('this.store.dispatch(setPreviewFile({ file: null }))');
-        break;
+
+  /**
+   * Muestra la vista previa dependiendo de la pestana seleccionada.
+   * 
+   * Ejecuta vistaPreviaEntidad() cuando codeOpen = codigo.ENTIDAD
+   * 
+   * Ejecuta XXXX() cuando codeOpen = codigo.SERVICIO
+   * 
+   * Ejecuta XXXX() cuando codeOpen = codigo.REPOSITORIO
+   * 
+   * Ejecuta XXXX() cuando codeOpen = codigo.CONTROLADOR
+   * 
+   * @param codeOpen 
+   * @param baseArchivo 
+   */
+  public previewCode(tab: number, baseArchivo: BaseArchivoModel): Observable<ResultadoProc<ArchivoModel>> {
+    this.store.dispatch(previewFile({ tipo: tab, baseArchivo: baseArchivo }));
+    switch (tab) {
+      case tabs.ENTIDAD:
+        return this.vistaPreviaEntidad(baseArchivo);
+      case tabs.SERVICIO:
+        return this.vistaPreviaServicio(baseArchivo);
+      case tabs.REPOSITORIO:
+        return this.vistaPreviaRepositorio(baseArchivo);
+      case tabs.CONTROLADOR:
+        return this.vistaPreviaControlador(baseArchivo);
     }
   }
+  /*==========  END PREVIEW ==========*/
+
+
+
+  /*==========  READ ==========*/
+
+  /**
+   * Obtiene un archivo por su path
+   * @param pathFile Path completo del archivo a leer
+   */
+  public leerFile(pathFile: string): Observable<ArchivoModel> {
+    return this.http.get<ArchivoModel>(`${this.urlBase}/read/file?pathFile=${pathFile}`);
+  }
+  /*==========  END READ ==========*/
+
+
+
+
+
 
 
 

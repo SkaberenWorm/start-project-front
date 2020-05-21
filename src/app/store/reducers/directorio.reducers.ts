@@ -1,20 +1,20 @@
 import { createReducer, on } from '@ngrx/store';
-import * as fromActions from '../actions/directorio.actions';
 import { Action } from '@ngrx/store';
+import * as fromActions from '../actions/directorio.actions';
 import { DirectorioModel } from 'src/app/commons/models/directorio.model';
 
 export interface DirectorioState {
-    dir: DirectorioModel,
+    directorioBase: DirectorioModel,
 }
 
 export const initialState: DirectorioState = {
-    dir: null,
+    directorioBase: null,
 }
 const _directorioReducer = createReducer(initialState,
 
-    on(fromActions.setCurrentDirectory, (state, { dir }) => ({
+    on(fromActions.setDirectorioBase, (state, { dir }) => ({
         ...state,
-        dir: dir,
+        directorioBase: dir
     })),
 
 );
