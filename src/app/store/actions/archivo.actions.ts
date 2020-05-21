@@ -37,6 +37,13 @@ export const setBaseArchivo = createAction(
     props<{ baseArchivo: BaseArchivoModel }>()
 );
 
+export const updateBaseArchivo = createAction('[ARCHIVO] Update base archivo');
+
+export const updateBaseArchivoSuccess = createAction(
+    '[ARCHIVO] Update base archivo success',
+    props<{ baseArchivo: BaseArchivoModel }>()
+);
+
 export const changeTab = createAction(
     '[ARCHIVO] Change tab',
     props<{ tab: number }>()

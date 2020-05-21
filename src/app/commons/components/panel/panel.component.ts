@@ -7,7 +7,7 @@ import { BaseArchivoModel } from '../../models/base-archivo.model';
 import { AtributoModel } from '../../models/atributo.model';
 import { FormGroup, FormControl } from '@angular/forms';
 import { UtilAlert } from '../../util/util-alert';
-import { setBaseArchivo } from 'src/app/store/actions/archivo.actions';
+import { setBaseArchivo, updateBaseArchivoSuccess } from 'src/app/store/actions/archivo.actions';
 import { DirectorioModel } from '../../models/directorio.model';
 import { tabs } from 'src/app/commons/components/editor/editor.component';
 
@@ -53,6 +53,10 @@ export class PanelComponent implements OnInit {
 
     this._subscriptionEnviroment = this.store.select('archivo').subscribe(state => {
       this.selectedTab = state.selectedTab;
+
+      if (state.updatingBaseArchivo) {
+        this.setBaseArchivo();
+      }
     });
   }
 
@@ -77,10 +81,33 @@ export class PanelComponent implements OnInit {
     atributos.push(new AtributoModel({ tipo: 'Categoria', variable: 'categoria', primaryKey: false }));
     atributos.push(new AtributoModel({ tipo: 'double', variable: 'activo', primaryKey: false }));
     this.baseArchivo.nombreClase = this.entidadName;
-    this.baseArchivo.packageArchivo = `${this.directorioBase.packageBase}.entities`;
+
     this.baseArchivo.packageBase = this.directorioBase.packageBase;
     this.baseArchivo.atributos = atributos;
-    this.baseArchivo.pathArchivo = `${this.directorioBase.path}/entities/${this.baseArchivo.nombreClase}.java`;
+
+    switch (this.selectedTab) {
+      case tabs.ENTIDAD:
+        this.baseArchivo.packageArchivo = `${this.directorioBase.packageBase}.entities`;
+        this.baseArchivo.pathArchivo = `${this.directorioBase.path}/entities/${this.baseArchivo.nombreClase}.java`;
+        break;
+      case tabs.CONTROLADOR:
+        this.baseArchivo.packageArchivo = `${this.directorioBase.packageBase}.controllers`;
+        this.baseArchivo.pathArchivo = `${this.directorioBase.path}/controllers/${this.baseArchivo.nombreClase}.java`;
+        break;
+      case tabs.SERVICIO:
+        this.baseArchivo.packageArchivo = `${this.directorioBase.packageBase}.services`;
+        this.baseArchivo.pathArchivo = `${this.directorioBase.path}/services/${this.baseArchivo.nombreClase}.java`;
+        break;
+      case tabs.SERVICIO_IMPL:
+        this.baseArchivo.packageArchivo = `${this.directorioBase.packageBase}.services.impl`;
+        this.baseArchivo.pathArchivo = `${this.directorioBase.path}/services.impl/${this.baseArchivo.nombreClase}.java`;
+        break;
+      case tabs.REPOSITORIO:
+        this.baseArchivo.packageArchivo = `${this.directorioBase.packageBase}.repositories`;
+        this.baseArchivo.pathArchivo = `${this.directorioBase.path}/repositories/${this.baseArchivo.nombreClase}.java`;
+        break;
+    }
+    this.store.dispatch(updateBaseArchivoSuccess({ baseArchivo: this.baseArchivo }));
   }
 
 

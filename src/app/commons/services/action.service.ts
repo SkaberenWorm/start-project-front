@@ -45,10 +45,13 @@ export class ActionService {
     return this.http.post<ResultadoProc<ArchivoModel>>(`${this.urlBase}/preview/entity`, baseArchivo, { headers: this.headers });
   }
   private vistaPreviaControlador(baseArchivo: BaseArchivoModel): Observable<ResultadoProc<ArchivoModel>> {
-    return this.http.post<ResultadoProc<ArchivoModel>>(`${this.urlBase}/preview/controllador`, baseArchivo, { headers: this.headers });
+    return this.http.post<ResultadoProc<ArchivoModel>>(`${this.urlBase}/preview/controlador`, baseArchivo, { headers: this.headers });
   }
   private vistaPreviaServicio(baseArchivo: BaseArchivoModel): Observable<ResultadoProc<ArchivoModel>> {
     return this.http.post<ResultadoProc<ArchivoModel>>(`${this.urlBase}/preview/servicio`, baseArchivo, { headers: this.headers });
+  }
+  private vistaPreviaServicioImpl(baseArchivo: BaseArchivoModel): Observable<ResultadoProc<ArchivoModel>> {
+    return this.http.post<ResultadoProc<ArchivoModel>>(`${this.urlBase}/preview/servicio-impl`, baseArchivo, { headers: this.headers });
   }
   private vistaPreviaRepositorio(baseArchivo: BaseArchivoModel): Observable<ResultadoProc<ArchivoModel>> {
     return this.http.post<ResultadoProc<ArchivoModel>>(`${this.urlBase}/preview/repositorio`, baseArchivo, { headers: this.headers });
@@ -61,11 +64,11 @@ export class ActionService {
    * 
    * Ejecuta vistaPreviaEntidad() cuando codeOpen = codigo.ENTIDAD
    * 
-   * Ejecuta XXXX() cuando codeOpen = codigo.SERVICIO
+   * Ejecuta vistaPreviaServicio() cuando codeOpen = codigo.SERVICIO
    * 
-   * Ejecuta XXXX() cuando codeOpen = codigo.REPOSITORIO
+   * Ejecuta vistaPreviaRepositorio() cuando codeOpen = codigo.REPOSITORIO
    * 
-   * Ejecuta XXXX() cuando codeOpen = codigo.CONTROLADOR
+   * Ejecuta vistaPreviaControlador() cuando codeOpen = codigo.CONTROLADOR
    * 
    * @param codeOpen 
    * @param baseArchivo 
@@ -81,6 +84,8 @@ export class ActionService {
         return this.vistaPreviaRepositorio(baseArchivo);
       case tabs.CONTROLADOR:
         return this.vistaPreviaControlador(baseArchivo);
+      case tabs.SERVICIO_IMPL:
+        return this.vistaPreviaServicioImpl(baseArchivo);
     }
   }
   /*==========  END PREVIEW ==========*/

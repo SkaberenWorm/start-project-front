@@ -3,12 +3,12 @@ import { ArchivoModel } from '../../models/archivo.model';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducer';
-import { closeSelectedFile, changeTab, previewFile } from 'src/app/store/actions/archivo.actions';
+import { closeSelectedFile, changeTab, previewFile, updateBaseArchivo } from 'src/app/store/actions/archivo.actions';
 import { BaseArchivoModel } from '../../models/base-archivo.model';
 
 
 export enum tabs {
-  FILE_OPEN, ENTIDAD, CONTROLADOR, SERVICIO, REPOSITORIO
+  FILE_OPEN, ENTIDAD, CONTROLADOR, SERVICIO, REPOSITORIO, SERVICIO_IMPL
 }
 @Component({
   selector: 'app-editor',
@@ -69,8 +69,15 @@ export class EditorComponent implements OnInit, OnDestroy {
       }
       if (state.selectedTab != null) {
         this.selectedTab = state.selectedTab;
-      } else {
-        console.error('selected Tab NULL');
+      }
+
+      if (state.selectedTab == tabs.FILE_OPEN && state.openFile != null) {
+        this.setMode(state.openFile.nombre);
+        this.fileOpen = state.openFile;
+        this.code = this.fileOpen.contenido
+      } else if (state.selectedTab == tabs.FILE_OPEN && state.openFile == null) {
+        this.fileOpen = null;
+        console.log(state.selectedTab);
       }
 
       if (state.loaded && state.selectedTab != tabs.FILE_OPEN && state.previewFile != null) {
@@ -81,11 +88,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.code = 'Problemas al intentar mostrar el código';
       }
 
-      if (state.selectedTab == tabs.FILE_OPEN && state.openFile != null) {
-        this.setMode(state.openFile.nombre);
-        this.fileOpen = state.openFile;
-        this.code = this.fileOpen.contenido
-      }
+
 
     });
 
@@ -182,6 +185,7 @@ export class EditorComponent implements OnInit, OnDestroy {
       this.selectedTab = this.textToEnum(selected);
       this.store.dispatch(changeTab({ tab: this.selectedTab }));
       if (this.selectedTab != tabs.FILE_OPEN) {
+        this.store.dispatch(updateBaseArchivo());
         this.store.dispatch(previewFile({ tipo: this.selectedTab, baseArchivo: this.baseArchivo }));
       }
     }
@@ -201,6 +205,8 @@ export class EditorComponent implements OnInit, OnDestroy {
         return this.selectedTab == tabs.CONTROLADOR;
       case 'SERVICIO':
         return this.selectedTab == tabs.SERVICIO;
+      case 'SERVICIO_IMPL':
+        return this.selectedTab == tabs.SERVICIO_IMPL;
       case 'REPOSITORIO':
         return this.selectedTab == tabs.REPOSITORIO;
       default:
@@ -237,6 +243,8 @@ export class EditorComponent implements OnInit, OnDestroy {
         return tabs.CONTROLADOR;
       case 'SERVICIO':
         return tabs.SERVICIO;
+      case 'SERVICIO_IMPL':
+        return tabs.SERVICIO_IMPL;
       case 'REPOSITORIO':
         return tabs.REPOSITORIO;
       default:

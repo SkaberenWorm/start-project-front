@@ -113,7 +113,6 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
         this.dirActual = this.directorios[1];
         localStorage.setItem(this.localStorageLastPath, btoa(this.dirActual.path));
         this.store.dispatch(setDirectorioBase({ dir: this.dirActual }));
-        console.warn('cargarDirectorios() => setPathBase');
       }
 
       // Quitamos los directerios de la lista (Directorio actual, directorio anterior)

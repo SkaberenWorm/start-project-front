@@ -13,6 +13,7 @@ export interface ArchivoState {
     error: string,
     baseArchivo: BaseArchivoModel,
     selectedTab: number,
+    updatingBaseArchivo: boolean,
 }
 
 export const initialState: ArchivoState = {
@@ -23,6 +24,7 @@ export const initialState: ArchivoState = {
     error: null,
     baseArchivo: null,
     selectedTab: tabs.ENTIDAD,
+    updatingBaseArchivo: false,
 }
 const _archivoReducer = createReducer(initialState,
 
@@ -70,12 +72,20 @@ const _archivoReducer = createReducer(initialState,
 
     on(fromActions.setBaseArchivo, (state, { baseArchivo }) => ({
         ...state,
-        baseArchivo: baseArchivo
+        baseArchivo: baseArchivo,
+
+    })),
+    on(fromActions.updateBaseArchivo, (state) => ({
+        ...state,
+        updatingBaseArchivo: true,
+    })),
+    on(fromActions.updateBaseArchivoSuccess, (state) => ({
+        ...state,
+        updatingBaseArchivo: false,
     })),
     on(fromActions.closeSelectedFile, (state) => ({
         ...state,
-        openFile: null,
-        selectedTab: state.selectedTab == 0 ? tabs.ENTIDAD : state.selectedTab
+        openFile: null
     })),
     on(fromActions.changeTab, (state, { tab }) => ({
         ...state,

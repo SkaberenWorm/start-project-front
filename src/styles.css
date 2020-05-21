@@ -456,7 +456,7 @@ span.cerrar:hover {
   border-bottom-right-radius: 6px;
   border-bottom-left-radius: 6px;
   height: auto !important;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .CodeMirror pre.CodeMirror-line, .CodeMirror pre{
