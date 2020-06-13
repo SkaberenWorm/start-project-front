@@ -1,5 +1,5 @@
-# El desquite Angular Started
-Este proyecto es un sistema personalizado de ventas
+# Start Project
+Generador de código para Spring boot
 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.5.
