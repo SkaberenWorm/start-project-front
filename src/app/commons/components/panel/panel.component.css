@@ -52,3 +52,7 @@
 .mat-divider {
     border-top: 1px dashed rgba(255, 166, 0, 0.2) !important;
 }
+
+.close {
+    opacity: unset !important;
+}

@@ -66,10 +66,11 @@
                             <th>Tipo</th>
                             <th>Variable</th>
                             <th>Primary key</th>
+                            <th style="width: 30px; max-width: 30px;"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let atributo of atributos">
+                        <tr *ngFor="let atributo of atributos; let indexAtributo = index;">
                             <td scope="row">{{atributo.tipo}}</td>
                             <td>{{atributo.variable}}</td>
                             <td>
@@ -80,6 +81,12 @@
                                     cancel
                                 </i>
 
+                            </td>
+                            <td class="text-right">
+                                <button type="button" class="close text-primary"
+                                    (click)="deleteAtributo(indexAtributo)">
+                                    <i class="material-icons text-danger" style="font-size: 20px;">close</i>
+                                </button>
                             </td>
                         </tr>
 

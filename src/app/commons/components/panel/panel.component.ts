@@ -140,4 +140,9 @@ export class PanelComponent implements OnInit {
       this.store.dispatch(updateBaseArchivo());
     }
   }
+
+  deleteAtributo(indexAtributo: number) {
+    this.atributos.splice(indexAtributo, 1);
+    this.store.dispatch(updateBaseArchivo());
+  }
 }
