@@ -11,9 +11,13 @@ export interface ArchivoState {
     loading: boolean,
     loaded: boolean,
     error: string,
+    success: string,
     baseArchivo: BaseArchivoModel,
     selectedTab: number,
     updatingBaseArchivo: boolean,
+
+    writingFile: boolean,
+    writenFile: boolean,
 }
 
 export const initialState: ArchivoState = {
@@ -22,9 +26,12 @@ export const initialState: ArchivoState = {
     loading: false,
     loaded: false,
     error: null,
+    success: null,
     baseArchivo: null,
     selectedTab: tabs.ENTIDAD,
     updatingBaseArchivo: false,
+    writingFile: false,
+    writenFile: false,
 }
 const _archivoReducer = createReducer(initialState,
 
@@ -34,6 +41,8 @@ const _archivoReducer = createReducer(initialState,
         loaded: false,
         openFile: null,
         load: false,
+        error: null,
+        success: null,
     })),
     on(fromActions.readSelectedFileSuccess, (state, { file }) => ({
         ...state,
@@ -56,6 +65,8 @@ const _archivoReducer = createReducer(initialState,
         selectedTab: tipo,
         baseArchivo: baseArchivo,
         load: false,
+        error: null,
+        success: null,
     })),
     on(fromActions.previewFileSuccess, (state, { file }) => ({
         ...state,
@@ -69,18 +80,45 @@ const _archivoReducer = createReducer(initialState,
         error: mensaje
     })),
 
+    on(fromActions.createFiles, (state, { baseArchivo: baseArchivo }) => ({
+        ...state,
+        writingFile: true,
+        writenFile: false,
+        // baseArchivo: baseArchivo,
+        load: false,
+        success: null,
+        error: null,
+    })),
+    on(fromActions.createFilesSuccess, (state, { mensaje }) => ({
+        ...state,
+        writingFile: false,
+        writenFile: true,
+        success: mensaje
+    })),
+    on(fromActions.createFilesFail, (state, { mensaje }) => ({
+        ...state,
+        writingFile: false,
+        error: mensaje
+    })),
+
 
     on(fromActions.setBaseArchivo, (state, { baseArchivo }) => ({
         ...state,
+        error: null,
+        success: null,
         baseArchivo: baseArchivo,
 
     })),
     on(fromActions.updateBaseArchivo, (state) => ({
         ...state,
+        error: null,
+        success: null,
         updatingBaseArchivo: true,
     })),
     on(fromActions.updateBaseArchivoSuccess, (state) => ({
         ...state,
+        error: null,
+        success: null,
         updatingBaseArchivo: false,
     })),
     on(fromActions.closeSelectedFile, (state) => ({
@@ -90,9 +128,13 @@ const _archivoReducer = createReducer(initialState,
     on(fromActions.changeTab, (state, { tab }) => ({
         ...state,
         selectedTab: tab,
+        error: null,
+        success: null,
     })),
     on(fromActions.refreshFiles, (state) => ({
         ...state,
+        error: null,
+        success: null,
     })),
 
 );

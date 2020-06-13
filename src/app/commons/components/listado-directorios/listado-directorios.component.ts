@@ -1,13 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { DirectorioModel } from '../../models/directorio.model';
-import { DirectorioService } from '../../services/directorio.service';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material';
-import { AppState } from 'src/app/store/app.reducer';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { readSelectedFile } from 'src/app/store/actions/archivo.actions';
 import { setDirectorioBase } from 'src/app/store/actions/directorio.actions';
+import { AppState } from 'src/app/store/app.reducer';
+
+import { DirectorioModel } from '../../models/directorio.model';
+import { DirectorioService } from '../../services/directorio.service';
 
 
 interface ExampleFlatNode {
@@ -66,8 +67,6 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
     private directorioService: DirectorioService,
     private store: Store<AppState>,
   ) {
-
-
   }
 
   ngOnDestroy() {
@@ -84,6 +83,11 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
     this.cargarDirectorios();
 
     this._subscription = this.store.select('archivo').subscribe(state => {
+
+      if (!state.writingFile && state.writenFile && (state.success != null || state.error != null)) {
+        this.cargarDirectorios();
+      }
+
       if (state.openFile == null) {
         this.unSelectedAllFiles();
       }

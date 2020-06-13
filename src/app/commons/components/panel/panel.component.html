@@ -15,23 +15,80 @@
     </div>
     <div class="card-body bg-dark-body ">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-10">
                 <form [formGroup]="formularioEntidad">
                     <mat-form-field class="text-white">
                         <mat-label>Nombre clase</mat-label>
-                        <input matInput value="" formControlName="nombre" autocomplete="off"
+                        <input matInput formControlName="nombre" autocomplete="off"
                             (keyup)="previewCode($event.target.value)">
                     </mat-form-field>
                 </form>
-                <b>
-                    <span>ENTIDAD: {{entidadName}} </span><br>
-                    <span>BASE: {{directorioBase.packageBase}} </span><br>
-                </b>
-            </div>
-            <div class="col-sm-12 text-right">
-                <button type="button" class="btn btn-primary btn-sm ml-auto" (click)="crearArchivos()">Crear</button>
 
             </div>
+            <div class="col-sm-2 text-right">
+                <button type="button" class="btn btn-primary mt-2 btn-sm ml-auto"
+                    (click)="crearArchivos()">Crear</button>
+            </div>
+
+            <mat-divider class="mt-2 mb-3 col-sm-12 text-orange"></mat-divider>
+
+            <div class="col-sm-5">
+                <form [formGroup]="formularioAtributo">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <mat-form-field class="text-white">
+                                <mat-label>Tipo</mat-label>
+                                <input matInput formControlName="tipo" autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-5">
+                            <mat-form-field class="text-white">
+                                <mat-label>Varable</mat-label>
+                                <input matInput formControlName="variable" autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-2 pt-3">
+                            <mat-checkbox data-color="primary" formControlName="primaryKey">PK</mat-checkbox>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-1">
+                <button type="button" class="close text-primary" matTooltip="Agregar atributo" (click)="addAtributo()"
+                    matTooltipClass="bg bg-success text-white" matTooltipPosition="above">
+                    <i class="material-icons mr-2 mt-2" style="font-size: 30px; color: orange;">add_circle_outline</i>
+                </button>
+            </div>
+            <div class="col-sm-6">
+                <table class="table table-ligth">
+                    <thead class="thead-ligth">
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Variable</th>
+                            <th>Primary key</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let atributo of atributos">
+                            <td scope="row">{{atributo.tipo}}</td>
+                            <td>{{atributo.variable}}</td>
+                            <td>
+                                <i class="material-icons text-success" *ngIf="atributo.primaryKey">
+                                    check_circle
+                                </i>
+                                <i class="material-icons text-danger" *ngIf="!atributo.primaryKey">
+                                    cancel
+                                </i>
+
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- <div class="col-sm-12 text-right">
+                <button type="button" class="btn btn-primary btn-sm ml-auto" (click)="crearArchivos()">Crear</button>
+            </div> -->
         </div>
     </div>
 </div>

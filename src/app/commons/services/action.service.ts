@@ -30,6 +30,10 @@ export class ActionService {
   public crearEntidad(baseArchivo: BaseArchivoModel): Observable<ResultadoProc<ArchivoModel>> {
     return this.http.post<ResultadoProc<ArchivoModel>>(`${this.urlBase}/create/entity`, baseArchivo, { headers: this.headers });
   }
+
+  public crearBaseCodigo(baseArchivo: BaseArchivoModel): Observable<ResultadoProc<boolean>> {
+    return this.http.post<ResultadoProc<boolean>>(`${this.urlBase}/create/base`, baseArchivo, { headers: this.headers });
+  }
   /*==========  END CREATE ==========*/
 
 
@@ -74,7 +78,7 @@ export class ActionService {
    * @param baseArchivo 
    */
   public previewCode(tab: number, baseArchivo: BaseArchivoModel): Observable<ResultadoProc<ArchivoModel>> {
-    this.store.dispatch(previewFile({ tipo: tab, baseArchivo: baseArchivo }));
+    // this.store.dispatch(previewFile({ tipo: tab, baseArchivo: baseArchivo }));
     switch (tab) {
       case tabs.ENTIDAD:
         return this.vistaPreviaEntidad(baseArchivo);

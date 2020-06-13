@@ -9,9 +9,10 @@ export class UtilAlert {
     Swal.fire({
       title: 'Error',
       type: 'error',
-      text: mensaje
+      html: mensaje
     });
   }
+
 
   errorSwalTopRight(mensaje: string) {
     Swal.fire({
@@ -26,7 +27,7 @@ export class UtilAlert {
   warningSwal(mensaje: string) {
     Swal.fire({
       type: 'warning',
-      text: mensaje
+      html: mensaje
     });
   }
 
@@ -34,7 +35,7 @@ export class UtilAlert {
     Swal.fire({
       title: 'Hecho!',
       type: 'success',
-      text: mensaje
+      html: mensaje
     });
   }
 }

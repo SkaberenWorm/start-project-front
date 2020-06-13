@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducer';
 import { closeSelectedFile, changeTab, previewFile, updateBaseArchivo } from 'src/app/store/actions/archivo.actions';
 import { BaseArchivoModel } from '../../models/base-archivo.model';
+import { UtilAlert } from '../../util/util-alert';
 
 
 export enum tabs {
@@ -40,6 +41,7 @@ export class EditorComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<AppState>,
+    private alert: UtilAlert
   ) { }
 
   ngOnDestroy() {
@@ -77,7 +79,6 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.code = this.fileOpen.contenido
       } else if (state.selectedTab == tabs.FILE_OPEN && state.openFile == null) {
         this.fileOpen = null;
-        console.log(state.selectedTab);
       }
 
       if (state.loaded && state.selectedTab != tabs.FILE_OPEN && state.previewFile != null) {
@@ -88,11 +89,14 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.code = 'Problemas al intentar mostrar el código';
       }
 
+      if (!state.writingFile && state.writenFile && state.success != null) {
+        this.alert.successSwal(state.success);
+      }
 
-
+      if (!state.writingFile && !state.writenFile && state.error != null) {
+        this.alert.errorSwal(state.error);
+      }
     });
-
-
   }
 
 

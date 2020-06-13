@@ -37,6 +37,21 @@ export const setBaseArchivo = createAction(
     props<{ baseArchivo: BaseArchivoModel }>()
 );
 
+export const createFiles = createAction(
+    '[ARCHIVO] Create files',
+    props<{ baseArchivo: BaseArchivoModel }>()
+);
+
+export const createFilesSuccess = createAction(
+    '[ARCHIVO] Create files success',
+    props<{ mensaje: string }>()
+);
+
+export const createFilesFail = createAction(
+    '[ARCHIVO] Create files fail',
+    props<{ mensaje: string }>()
+);
+
 export const updateBaseArchivo = createAction('[ARCHIVO] Update base archivo');
 
 export const updateBaseArchivoSuccess = createAction(

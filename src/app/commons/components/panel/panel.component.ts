@@ -1,15 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/store/app.reducer';
-import { ActionService } from '../../services/action.service';
-import { BaseArchivoModel } from '../../models/base-archivo.model';
-import { AtributoModel } from '../../models/atributo.model';
-import { FormGroup, FormControl } from '@angular/forms';
-import { UtilAlert } from '../../util/util-alert';
-import { setBaseArchivo, updateBaseArchivoSuccess } from 'src/app/store/actions/archivo.actions';
-import { DirectorioModel } from '../../models/directorio.model';
+import { Subscription } from 'rxjs';
 import { tabs } from 'src/app/commons/components/editor/editor.component';
+import {
+  createFiles,
+  previewFile,
+  updateBaseArchivo,
+  updateBaseArchivoSuccess,
+} from 'src/app/store/actions/archivo.actions';
+import { AppState } from 'src/app/store/app.reducer';
+
+import { AtributoModel } from '../../models/atributo.model';
+import { BaseArchivoModel } from '../../models/base-archivo.model';
+import { DirectorioModel } from '../../models/directorio.model';
+import { Util } from '../../util/util';
+import { UtilAlert } from '../../util/util-alert';
 
 @Component({
   selector: 'app-panel',
@@ -21,12 +27,11 @@ export class PanelComponent implements OnInit {
   private _subscriptionDirectorio: Subscription;
   private _subscriptionEnviroment: Subscription;
 
-  // public directorioActual: DirectorioModel = null;
-
   public pathValido = false;
 
   public directorioBase: DirectorioModel = new DirectorioModel();
   public entidadName = null;
+  public atributos: Array<AtributoModel> = [];
 
   private selectedTab = tabs.ENTIDAD;
   private baseArchivo = new BaseArchivoModel();
@@ -34,15 +39,21 @@ export class PanelComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>,
-    private actionsServices: ActionService,
     private alert: UtilAlert
   ) { }
 
 
   formularioEntidad: FormGroup;
+  formularioAtributo: FormGroup;
   ngOnInit(): void {
     this.formularioEntidad = new FormGroup({
-      nombre: new FormControl(),
+      nombre: new FormControl('', [Validators.required]),
+    });
+
+    this.formularioAtributo = new FormGroup({
+      tipo: new FormControl('', [Validators.required]),
+      variable: new FormControl('', [Validators.required]),
+      primaryKey: new FormControl(''),
     });
 
     this._subscriptionDirectorio = this.store.select('directorio').subscribe(state => {
@@ -53,37 +64,29 @@ export class PanelComponent implements OnInit {
 
     this._subscriptionEnviroment = this.store.select('archivo').subscribe(state => {
       this.selectedTab = state.selectedTab;
-
       if (state.updatingBaseArchivo) {
         this.setBaseArchivo();
+        this.store.dispatch(updateBaseArchivoSuccess({ baseArchivo: this.baseArchivo }));
+        this.store.dispatch(previewFile({ tipo: this.selectedTab, baseArchivo: this.baseArchivo }));
       }
     });
   }
-
 
   crearArchivos() {
     this.setBaseArchivo();
-    this.actionsServices.crearEntidad(this.baseArchivo).subscribe(result => {
-      if (!result.error) {
-
-      } else {
-        this.alert.errorSwalTopRight(result.mensaje);
-      }
-    });
-
+    if (this.directorioBase.pathValid) {
+      this.store.dispatch(createFiles({ baseArchivo: this.baseArchivo }));
+    } else {
+      this.alert.errorSwal('Debe estar en el package principal del proyecto');
+    }
   }
 
   setBaseArchivo() {
-    let atributos = new Array<AtributoModel>();
-    atributos.push(new AtributoModel({ tipo: 'int', variable: 'id', primaryKey: true }));
-    atributos.push(new AtributoModel({ tipo: 'String', variable: 'descripcion', primaryKey: false }));
-    atributos.push(new AtributoModel({ tipo: 'List<Imagen>', variable: 'imagenes', primaryKey: false }));
-    atributos.push(new AtributoModel({ tipo: 'Categoria', variable: 'categoria', primaryKey: false }));
-    atributos.push(new AtributoModel({ tipo: 'double', variable: 'activo', primaryKey: false }));
-    this.baseArchivo.nombreClase = this.entidadName;
 
+    this.baseArchivo.nombreClase = this.entidadName;
     this.baseArchivo.packageBase = this.directorioBase.packageBase;
-    this.baseArchivo.atributos = atributos;
+    this.baseArchivo.pathDirectorioBase = this.directorioBase.path;
+    this.baseArchivo.atributos = this.atributos;
 
     switch (this.selectedTab) {
       case tabs.ENTIDAD:
@@ -107,9 +110,8 @@ export class PanelComponent implements OnInit {
         this.baseArchivo.pathArchivo = `${this.directorioBase.path}/repositories/${this.baseArchivo.nombreClase}.java`;
         break;
     }
-    this.store.dispatch(updateBaseArchivoSuccess({ baseArchivo: this.baseArchivo }));
-  }
 
+  }
 
   ngOnDestroy() {
     this._subscriptionDirectorio.unsubscribe();
@@ -117,16 +119,25 @@ export class PanelComponent implements OnInit {
   }
 
   previewCode(nombreEntidad: string) {
-    const baseArchivo: BaseArchivoModel = Object.assign({}, this.baseArchivo);;
-    this.entidadName = nombreEntidad;
-    this.setBaseArchivo();
-    const isDiferent = baseArchivo.nombreClase != this.baseArchivo.nombreClase;
+    this.entidadName = nombreEntidad.trim();
+    const isDiferent = nombreEntidad != this.baseArchivo.nombreClase;
     if (isDiferent) {
-      this.store.dispatch(setBaseArchivo({ baseArchivo: this.baseArchivo }));
-      console.warn('setBaseArchivo');
-      this.actionsServices.previewCode(this.selectedTab, this.baseArchivo);
+      this.store.dispatch(updateBaseArchivo());
     }
-
   }
 
+  addAtributo() {
+    Util.setFormForValidate(this.formularioAtributo);
+    if (this.formularioAtributo.valid) {
+      const tipo = this.formularioAtributo.controls.tipo.value.trim();
+      const variable = this.formularioAtributo.controls.variable.value.trim();
+      let primaryKey = false;
+      if (this.formularioAtributo.controls.primaryKey.value) {
+        primaryKey = true;
+      }
+      this.atributos.push(new AtributoModel({ tipo: tipo, variable: variable, primaryKey: primaryKey }));
+      this.formularioAtributo.reset();
+      this.store.dispatch(updateBaseArchivo());
+    }
+  }
 }

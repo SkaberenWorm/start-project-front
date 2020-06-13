@@ -55,4 +55,24 @@ export class ArchivoEffects {
         )
     );
 
+    createBaseCode$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(archivoActions.createFiles),
+            exhaustMap(action =>
+                this.actionService.crearBaseCodigo(action.baseArchivo).pipe(
+                    map(resul => {
+                        if (resul['error']) {
+                            return archivoActions.createFilesFail({ mensaje: resul.mensaje });
+                        } else {
+                            // this.store.dispatch(archivoActions.refreshFiles());
+                            return archivoActions.createFilesSuccess({ mensaje: resul.mensaje });
+                        }
+                    }),
+                    catchError(error => of(archivoActions.createFilesFail({ mensaje: '' })))
+                )
+            )
+
+        )
+    );
+
 }
