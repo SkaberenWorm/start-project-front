@@ -1,16 +1,15 @@
-import { AtributoModel } from "./atributo.model";
+import { AtributoModel } from './atributo.model';
+import { OptionModel } from './option.model';
 
 export class BaseArchivoModel {
 
   public nombreClase = '';
-
   public pathArchivo = '';
   public packageArchivo = '';
-
   public pathDirectorioBase = '';
   public packageBase = '';
-
   public contenido = '';
+  public option = new OptionModel();
   public atributos: Array<AtributoModel> = [];
 
   constructor(fields?: {
@@ -20,6 +19,7 @@ export class BaseArchivoModel {
     pathDirectorioBase?: string;
     packageBase?: string;
     contenido?: string;
+    option?: OptionModel;
     atributos?: Array<AtributoModel>;
   }) {
     if (fields) {

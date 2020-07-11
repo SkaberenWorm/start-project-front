@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -20,14 +20,13 @@ import { UtilAlert } from '../../util/util-alert';
 @Component({
   selector: 'app-panel',
   templateUrl: './panel.component.html',
-  styleUrls: ['./panel.component.css']
+  styleUrls: ['./panel.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PanelComponent implements OnInit {
 
   private _subscriptionDirectorio: Subscription;
   private _subscriptionEnviroment: Subscription;
-
-  public pathValido = false;
 
   public directorioBase: DirectorioModel = new DirectorioModel();
   public entidadName = null;
@@ -39,13 +38,15 @@ export class PanelComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>,
-    private alert: UtilAlert
+    private alert: UtilAlert,
+    private changeDetector: ChangeDetectorRef
   ) { }
 
 
   formularioEntidad: FormGroup;
   formularioAtributo: FormGroup;
   ngOnInit(): void {
+    console.log("ngOnInit()");
     this.formularioEntidad = new FormGroup({
       nombre: new FormControl('', [Validators.required]),
     });
@@ -59,6 +60,7 @@ export class PanelComponent implements OnInit {
     this._subscriptionDirectorio = this.store.select('directorio').subscribe(state => {
       if (state.directorioBase != null && state.directorioBase.path != this.directorioBase.path) {
         this.directorioBase = state.directorioBase;
+        this.changeDetector.detectChanges();
       }
     });
 
@@ -68,11 +70,13 @@ export class PanelComponent implements OnInit {
         this.setBaseArchivo();
         this.store.dispatch(updateBaseArchivoSuccess({ baseArchivo: this.baseArchivo }));
         this.store.dispatch(previewFile({ tipo: this.selectedTab, baseArchivo: this.baseArchivo }));
+        this.changeDetector.detectChanges();
       }
     });
   }
 
   crearArchivos() {
+    console.log("crearArchivos()");
     this.setBaseArchivo();
     if (this.directorioBase.pathValid) {
       this.store.dispatch(createFiles({ baseArchivo: this.baseArchivo }));
@@ -82,6 +86,7 @@ export class PanelComponent implements OnInit {
   }
 
   setBaseArchivo() {
+    console.log("setBaseArchivo()");
 
     this.baseArchivo.nombreClase = this.entidadName;
     this.baseArchivo.packageBase = this.directorioBase.packageBase;
@@ -114,11 +119,13 @@ export class PanelComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    console.log("ngOnDestroy()");
     this._subscriptionDirectorio.unsubscribe();
     this._subscriptionEnviroment.unsubscribe();
   }
 
   previewCode(nombreEntidad: string) {
+    console.log("previewCode(nombreEntidad: string)");
     this.entidadName = nombreEntidad.trim();
     const isDiferent = nombreEntidad != this.baseArchivo.nombreClase;
     if (isDiferent) {
@@ -127,6 +134,7 @@ export class PanelComponent implements OnInit {
   }
 
   addAtributo() {
+    console.log("addAtributo()");
     Util.setFormForValidate(this.formularioAtributo);
     if (this.formularioAtributo.valid) {
       const tipo = this.formularioAtributo.controls.tipo.value.trim();
@@ -142,6 +150,7 @@ export class PanelComponent implements OnInit {
   }
 
   deleteAtributo(indexAtributo: number) {
+    console.log("deleteAtributo(indexAtributo: number)");
     this.atributos.splice(indexAtributo, 1);
     this.store.dispatch(updateBaseArchivo());
   }

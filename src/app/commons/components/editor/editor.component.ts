@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ArchivoModel } from '../../models/archivo.model';
-import { Subscription } from 'rxjs';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { changeTab, closeSelectedFile, previewFile, updateBaseArchivo } from 'src/app/store/actions/archivo.actions';
 import { AppState } from 'src/app/store/app.reducer';
-import { closeSelectedFile, changeTab, previewFile, updateBaseArchivo } from 'src/app/store/actions/archivo.actions';
+
+import { ArchivoModel } from '../../models/archivo.model';
 import { BaseArchivoModel } from '../../models/base-archivo.model';
 import { UtilAlert } from '../../util/util-alert';
 
@@ -14,12 +15,13 @@ export enum tabs {
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
-  styleUrls: ['./editor.component.css']
+  styleUrls: ['./editor.component.css'],
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditorComponent implements OnInit, OnDestroy {
 
   public code = "";
-  public codeEdited = "";
+  // public codeEdited = "";
   public selectedTab = tabs.ENTIDAD;
 
   public fileOpen: ArchivoModel = null;
@@ -29,7 +31,8 @@ export class EditorComponent implements OnInit, OnDestroy {
   private _subscriptionDirectorio: Subscription;
 
 
-  private mode = '';
+  private mode = 'text/x-java';
+  private lastExtension = 'java';
   public codeMirrorOptions: any = {};
   public isSaved = true;
   public esPreview = true;
@@ -41,7 +44,8 @@ export class EditorComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<AppState>,
-    private alert: UtilAlert
+    private alert: UtilAlert,
+    private changeDetector: ChangeDetectorRef,
   ) { }
 
   ngOnDestroy() {
@@ -50,6 +54,7 @@ export class EditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log("ngOnInit()");
     this.setCodeMirrorOptions();
 
     this._subscriptionDirectorio = this.store.select('directorio').subscribe(state => {
@@ -63,6 +68,7 @@ export class EditorComponent implements OnInit, OnDestroy {
       } else {
         this.code = "";
       }
+      this.changeDetector.detectChanges();
     });
 
     this._subscriptionArchivo = this.store.select('archivo').subscribe(state => {
@@ -82,7 +88,7 @@ export class EditorComponent implements OnInit, OnDestroy {
       }
 
       if (state.loaded && state.selectedTab != tabs.FILE_OPEN && state.previewFile != null) {
-        this.setMode(state.previewFile.nombre);
+        this.setMode(state.previewFile.nombre + '.java');
         this.filePreview = state.previewFile;
         this.code = this.filePreview.contenido
       } else if (!state.loading && !state.loaded && state.error != null) {
@@ -96,59 +102,67 @@ export class EditorComponent implements OnInit, OnDestroy {
       if (!state.writingFile && !state.writenFile && state.error != null) {
         this.alert.errorSwal(state.error);
       }
+      this.changeDetector.detectChanges();
     });
   }
 
 
   setMode(fileName: string) {
+
     let extension = fileName;
-    Array.from(Array(5)).forEach(() => {
+    Array.from(Array(3)).forEach(() => {
       extension = extension.substring(extension.indexOf('.'), extension.length);
     });
     extension = extension.replace('.', '');
-    switch (extension) {
-      case 'java':
-        this.mode = 'text/x-java';
-        break;
-      case 'json':
-        this.mode = 'application/ld+json';
-        break;
-      case 'ts':
-        this.mode = 'text/typescript';
-        break;
-      case 'css':
-        this.mode = 'text/css';
-        break;
-      case 'scss':
-        this.mode = 'text/x-scss';
-        break;
-      case 'less':
-        this.mode = 'text/x-less';
-        break;
-      case 'html':
-        this.mode = 'text/html';
-      case 'sql':
-        // text/x-plsql
-        // text/x-sql
-        // text/x-sqlite
-        this.mode = 'text/x-mssql';
-        break;
-      case 'md':
-        this.mode = 'text/x-gfm';
-        break;
-      default:
-        this.mode = 'text/x-java';
-        break;
+    if (this.lastExtension != extension) {
+      console.log('setMode(fileName: string)');
+      this.lastExtension = extension;
+      switch (extension) {
+        case 'java':
+          this.mode = 'text/x-java';
+          break;
+        case 'json':
+          this.mode = 'application/ld+json';
+          break;
+        case 'ts':
+          this.mode = 'text/typescript';
+          break;
+        case 'css':
+          this.mode = 'text/css';
+          break;
+        case 'scss':
+          this.mode = 'text/x-scss';
+          break;
+        case 'less':
+          this.mode = 'text/x-less';
+          break;
+        case 'html':
+          this.mode = 'text/html';
+        case 'sql':
+          // text/x-plsql
+          // text/x-sql
+          // text/x-sqlite
+          this.mode = 'text/x-mssql';
+          break;
+        case 'md':
+          this.mode = 'text/x-gfm';
+          break;
+        default:
+          this.mode = 'text/x-java';
+          break;
+      }
+      this.setCodeMirrorOptions();
     }
-    this.setCodeMirrorOptions();
   }
 
   /**
    * Actualizamos las opciones para que tome el mode
    */
   setCodeMirrorOptions() {
+    console.log('setCodeMirrorOptions()');
     this.codeMirrorOptions = {
       foldGutter: true,
+      readOnly: true,
       theme: 'darcula',
       mode: this.mode,
       lineNumbers: true,
@@ -160,30 +174,32 @@ export class EditorComponent implements OnInit, OnDestroy {
       // gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
       autoCloseBrackets: true,
       lint: true,
-      extraKeys: {
-        "Esc": () => this.closeCode(),
-        "Ctrl-S": () => this.saveCode(),
-        "Cmd-S": () => this.saveCode(),
-      }
+      // extraKeys: {
+      //   "Esc": () => this.closeCode(),
+      //   "Ctrl-S": () => this.saveCode(),
+      //   "Cmd-S": () => this.saveCode(),
+      // }
     };
   }
 
 
-  saveCode() {
-    if (!this.esPreview) {
-      this.isSaved = true;
-      // this.fileOpen.contenido = this.codeEdited;
-      // this.store.dispatch(setOpenFile({ file: this.fileOpen }));
-      // console.warn('this.store.dispatch(setOpenFile({ file: this.fileOpen }));');
-      console.log('save');
-    }
-  }
+  // saveCode() {
+  //   console.log("saveCode()");
+  //   if (!this.esPreview) {
+  //     this.isSaved = true;
+  //     // this.fileOpen.contenido = this.codeEdited;
+  //     // this.store.dispatch(setOpenFile({ file: this.fileOpen }));
+  //     // console.warn('this.store.dispatch(setOpenFile({ file: this.fileOpen }));');
+  //     console.log('save');
+  //   }
+  // }
 
   /**
    * Setea el código a ver (Entidad, repositorio, etc.)
    * @param selected 
    */
   codeViewClick(selected: string) {
+    console.log("codeViewClick(selected: string)");
     if (this.isPackageValid) {
       // this.code = "";
       this.selectedTab = this.textToEnum(selected);
@@ -200,6 +216,7 @@ export class EditorComponent implements OnInit, OnDestroy {
    * @param selected 
    */
   isView(selected: string) {
+    console.log("isView(selected: string)");
     switch (selected) {
       case 'FILE_OPEN':
         return this.selectedTab == tabs.FILE_OPEN;
@@ -222,22 +239,25 @@ export class EditorComponent implements OnInit, OnDestroy {
    * Cierra la pestaña del archivo seleccionado (tabs.FILE_OPEN)
    */
   closeCode(): void {
+    console.log("closeCode()");
     this.store.dispatch(closeSelectedFile());
   }
 
-  setEditorContent(codigo: string) {
-    console.log(codigo);
-    this.codeEdited = codigo;
-    if (this.fileOpen != null) {
-      if (codigo != this.fileOpen.contenido) {
-        this.isSaved = false;
-      } else {
-        this.isSaved = true;
-      }
-    }
-  }
+  // setEditorContent(codigo: string) {
+  //   console.log("setEditorContent(codigo: string)");
+  //   this.codeEdited = codigo;
+  //   if (this.fileOpen != null) {
+  //     if (codigo != this.fileOpen.contenido) {
+  //       this.isSaved = false;
+  //     } else {
+  //       this.isSaved = true;
+  //     }
+  //   }
+  //   this.changeDetector.checkNoChanges();
+  // }
 
   textToEnum(selected: string) {
+    console.log("textToEnum(selected: string)");
     switch (selected) {
       case 'FILE_OPEN':
         return tabs.FILE_OPEN;
@@ -254,6 +274,7 @@ export class EditorComponent implements OnInit, OnDestroy {
       default:
         return tabs.ENTIDAD;
     }
+
   }
 
 }

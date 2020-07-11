@@ -39,8 +39,10 @@
         </nav>
     </div>
     <div class="card-body p-0 h-100 bg-dark-body">
-        <ngx-codemirror #codemirror [options]="codeMirrorOptions" [(ngModel)]="code"
+        <!-- <ngx-codemirror #codemirror [options]="codeMirrorOptions" [(ngModel)]="code"
             (ngModelChange)="setEditorContent($event)">
+        </ngx-codemirror> -->
+        <ngx-codemirror #codemirror [options]="codeMirrorOptions" [(ngModel)]="code">
         </ngx-codemirror>
     </div>
 </div>

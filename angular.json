@@ -25,12 +25,10 @@
             ],
             "styles": [
               "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
-              "node_modules/angular-calendar/scss/angular-calendar.scss",
               "node_modules/sweetalert2/src/sweetalert2.scss",
               "src/assets/css/demo.css",
               "src/assets/scss/material-dashboard.scss",
               "src/styles.css",
-              "node_modules/@fortawesome/fontawesome-free/css/all.css",
               "node_modules/codemirror/lib/codemirror.css",
               "node_modules/codemirror/theme/material.css"
             ],
@@ -42,9 +40,6 @@
               "node_modules/arrive/src/arrive.js",
               "node_modules/hammerjs/hammer.min.js",
               "node_modules/web-animations-js/web-animations.min.js",
-              "node_modules/twitter-bootstrap-wizard/jquery.bootstrap.wizard.js",
-              "node_modules/bootstrap-notify/bootstrap-notify.js",
-              "node_modules/nouislider/distribute/nouislider.min.js",
               "node_modules/bootstrap-select/dist/js/bootstrap-select.js",
               "node_modules/jasny-bootstrap/dist/js/jasny-bootstrap.min.js",
               "node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js",

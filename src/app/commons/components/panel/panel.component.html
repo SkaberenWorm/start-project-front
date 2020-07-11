@@ -32,7 +32,7 @@
 
             <mat-divider class="mt-2 mb-3 col-sm-12 text-orange"></mat-divider>
 
-            <div class="col-sm-5">
+            <!-- <div class="col-sm-5">
                 <form [formGroup]="formularioAtributo">
                     <div class="row">
                         <div class="col-sm-5">
@@ -58,40 +58,70 @@
                     matTooltipClass="bg bg-success text-white" matTooltipPosition="above">
                     <i class="material-icons mr-2 mt-2" style="font-size: 30px; color: orange;">add_circle_outline</i>
                 </button>
-            </div>
-            <div class="col-sm-6">
-                <table class="table table-ligth">
-                    <thead class="thead-ligth">
-                        <tr>
-                            <th>Tipo</th>
-                            <th>Variable</th>
-                            <th>Primary key</th>
-                            <th style="width: 30px; max-width: 30px;"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let atributo of atributos; let indexAtributo = index;">
-                            <td scope="row">{{atributo.tipo}}</td>
-                            <td>{{atributo.variable}}</td>
-                            <td>
-                                <i class="material-icons text-success" *ngIf="atributo.primaryKey">
-                                    check_circle
-                                </i>
-                                <i class="material-icons text-danger" *ngIf="!atributo.primaryKey">
-                                    cancel
-                                </i>
+            </div> -->
+            <div class="col-sm-12">
+                <form [formGroup]="formularioAtributo">
+                    <table class="table table-ligth">
+                        <thead class="thead-ligth">
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Variable</th>
+                                <th>Primary key</th>
+                                <th style="width: 30px; max-width: 30px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
 
-                            </td>
-                            <td class="text-right">
-                                <button type="button" class="close text-primary"
-                                    (click)="deleteAtributo(indexAtributo)">
-                                    <i class="material-icons text-danger" style="font-size: 20px;">close</i>
-                                </button>
-                            </td>
-                        </tr>
+                                <td>
+                                    <mat-form-field class="text-white">
+                                        <mat-label>Tipo</mat-label>
+                                        <input matInput formControlName="tipo" autocomplete="off">
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    <mat-form-field class="text-white">
+                                        <mat-label>Varable</mat-label>
+                                        <input matInput formControlName="variable" autocomplete="off">
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    <mat-checkbox data-color="primary" formControlName="primaryKey">PK
+                                    </mat-checkbox>
+                                </td>
+                                <td>
+                                    <button type="button" class="close text-primary my-0" matTooltip="Agregar atributo"
+                                        (click)="addAtributo()" matTooltipClass="bg bg-success text-white"
+                                        matTooltipPosition="above">
+                                        <i class="material-icons mr-2 mt-0"
+                                            style="font-size: 25px; color: orange;">add_circle_outline</i>
+                                    </button>
+                                </td>
 
-                    </tbody>
-                </table>
+                            </tr>
+                            <tr *ngFor="let atributo of atributos; let indexAtributo = index;">
+                                <td scope="row">{{atributo.tipo}}</td>
+                                <td>{{atributo.variable}}</td>
+                                <td>
+                                    <i class="material-icons text-success" *ngIf="atributo.primaryKey">
+                                        check_circle
+                                    </i>
+                                    <i class="material-icons text-danger" *ngIf="!atributo.primaryKey">
+                                        cancel
+                                    </i>
+
+                                </td>
+                                <td class="text-right">
+                                    <button type="button" class="close text-primary"
+                                        (click)="deleteAtributo(indexAtributo)">
+                                        <i class="material-icons text-danger" style="font-size: 20px;">close</i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </form>
             </div>
             <!-- <div class="col-sm-12 text-right">
                 <button type="button" class="btn btn-primary btn-sm ml-auto" (click)="crearArchivos()">Crear</button>

@@ -1,5 +1,5 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -23,7 +23,8 @@ interface ExampleFlatNode {
 @Component({
   selector: 'app-listado-directorios',
   templateUrl: './listado-directorios.component.html',
-  styleUrls: ['./listado-directorios.component.css']
+  styleUrls: ['./listado-directorios.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
@@ -66,6 +67,7 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
   constructor(
     private directorioService: DirectorioService,
     private store: Store<AppState>,
+    private changeDetector: ChangeDetectorRef
   ) {
   }
 
@@ -74,6 +76,7 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log("ngOnInit()");
 
     // Traemos el último path del localStorage
     if (localStorage.getItem(this.localStorageLastPath)) {
@@ -111,7 +114,6 @@ export class ListadoDirectoriosComponent implements OnInit, OnDestroy {
   public cargarDirectorios() {
     this.directorioService.getDirectorios(this.path, this.directoriosDesplegados).subscribe(result => {
       this.directorios = result;
-
       if (this.dirActual.path !== this.directorios[1].path) {
         this.dirBack = this.directorios[0];
         this.dirActual = this.directorios[1];

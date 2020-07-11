@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ConfigService } from 'src/app/commons/services/config.service';
 
@@ -20,16 +20,16 @@ const defaultConfig: IConfig = {
       minSize: (250 * 100 / window.innerWidth),
       rows: [
         { size: 50, minSize: 40 },
-        { size: 25, minSize: 25 },
-        { size: 25, minSize: 25 },
+        { size: 25, minSize: 30 },
+        { size: 25, minSize: 30 },
       ]
     },
     {
       size: (100 - (300 * 100 / window.innerWidth)),
       minSize: 0,
       rows: [
-        { size: 60, minSize: 0 },
-        { size: 40, minSize: 0 }
+        { size: 60, minSize: 50 },
+        { size: 40, minSize: 50 }
       ]
     }
 
@@ -38,7 +38,8 @@ const defaultConfig: IConfig = {
 @Component({
   selector: 'app-inicio-index',
   templateUrl: './inicio-index.component.html',
-  styleUrls: ['./inicio-index.component.css']
+  styleUrls: ['./inicio-index.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InicioIndexComponent implements OnInit, OnDestroy {
 
@@ -52,6 +53,7 @@ export class InicioIndexComponent implements OnInit, OnDestroy {
 
   constructor(
     private configService: ConfigService,
+    private changeDetector: ChangeDetectorRef,
   ) { }
 
   ngOnDestroy() {
@@ -75,13 +77,16 @@ export class InicioIndexComponent implements OnInit, OnDestroy {
   }
 
   setSizes() {
+    console.log("setSizes()");
     this.height = window.innerHeight;
     this.width = window.innerWidth;
     this.sizeListadoDirectorios = 350 * 100 / this.width;
     this.minSizeListadoDirectorios = 250 * 100 / this.width;
+    this.changeDetector.detectChanges();
   }
 
   resetConfig() {
+    console.log("resetConfig()");
     this.configSplit = defaultConfig;
     localStorage.removeItem(this.localStorageSplitIndex);
   }

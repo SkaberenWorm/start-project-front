@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+
 @import "~codemirror/lib/codemirror";
 @import "~codemirror/theme/material";
 @import "~codemirror/theme/dracula";
@@ -7,7 +8,6 @@
 @import '~codemirror/lib/codemirror.css';
 @import '~codemirror/addon/fold/foldgutter.css';
 @import '~codemirror/addon/lint/lint.css';
-
 .custom-error {
   color: red;
   padding-left: 58px;
@@ -19,8 +19,7 @@
 }
 
 .custom-is-invalid .form-control {
-  background-image: linear-gradient(to top, #f44336 2px, rgba(3, 38, 80, 0) 2px),
-    linear-gradient(to top, #f44336 1px, rgba(210, 210, 210, 0) 1px) !important;
+  background-image: linear-gradient(to top, #f44336 2px, rgba(3, 38, 80, 0) 2px), linear-gradient(to top, #f44336 1px, rgba(210, 210, 210, 0) 1px) !important;
 }
 
 .custom-is-invalid .material-icons {
@@ -74,15 +73,19 @@ div.block-ui-spinner .message {
 .list-group-item :first-child {
   margin-right: 0rem;
 }
+
 .material-icons.md-18 {
   font-size: 18px;
 }
+
 .material-icons.md-24 {
   font-size: 24px;
 }
+
 .material-icons.md-36 {
   font-size: 36px;
 }
+
 .material-icons.md-48 {
   font-size: 48px;
 }
@@ -105,11 +108,7 @@ span.cerrar:hover {
   color: salmon;
 }
 
-.dropdown-menu .dropdown-item:hover,
-.dropdown-menu .dropdown-item:focus,
-.dropdown-menu a:hover,
-.dropdown-menu a:focus,
-.dropdown-menu a:active {
+.dropdown-menu .dropdown-item:hover, .dropdown-menu .dropdown-item:focus, .dropdown-menu a:hover, .dropdown-menu a:focus, .dropdown-menu a:active {
   color: #ffffff !important;
 }
 
@@ -134,18 +133,8 @@ span.cerrar:hover {
 }
 
 /**  SOBRE ESCRITURA **/
-.mat-button.btn.btn-outline-primary:focus,
-.mat-button.btn.btn-outline-primary.focus,
-.mat-button.btn.btn-outline-primary:hover,
-.mat-raised-button.btn.btn-outline-primary:focus,
-.mat-raised-button.btn.btn-outline-primary.focus,
-.mat-raised-button.btn.btn-outline-primary:hover,
-.mat-raised-button.btn:not([class*='mat-elevation-z']).btn-outline-primary:focus,
-.mat-raised-button.btn:not([class*='mat-elevation-z']).btn-outline-primary.focus,
-.mat-raised-button.btn:not([class*='mat-elevation-z']).btn-outline-primary:hover,
-.btn.btn-outline-primary:focus,
-.btn.btn-outline-primary.focus,
-.btn.btn-outline-primary:hover {
+
+.mat-button.btn.btn-outline-primary:focus, .mat-button.btn.btn-outline-primary.focus, .mat-button.btn.btn-outline-primary:hover, .mat-raised-button.btn.btn-outline-primary:focus, .mat-raised-button.btn.btn-outline-primary.focus, .mat-raised-button.btn.btn-outline-primary:hover, .mat-raised-button.btn:not([class*='mat-elevation-z']).btn-outline-primary:focus, .mat-raised-button.btn:not([class*='mat-elevation-z']).btn-outline-primary.focus, .mat-raised-button.btn:not([class*='mat-elevation-z']).btn-outline-primary:hover, .btn.btn-outline-primary:focus, .btn.btn-outline-primary.focus, .btn.btn-outline-primary:hover {
   background-color: rgba(153, 153, 153, 0.05);
   box-shadow: 0px !important;
 }
@@ -157,13 +146,16 @@ span.cerrar:hover {
 .sidebar .user {
   height: 50px;
 }
+
 .card {
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
 .esMobile {
   display: none;
 }
+
 .navbar .logo-img-navbar img {
   display: none;
 }
@@ -177,6 +169,7 @@ span.cerrar:hover {
 }
 
 /* PANTALLA MEDIANA */
+
 @media (max-width: 991px) {
   .txt-desquite-white {
     color: white;
@@ -200,11 +193,9 @@ span.cerrar:hover {
     padding-left: 0px;
     padding-right: 0px;
   }
-
   .main-panel .main-content {
     margin-top: 25px;
   }
-
   .navbar.navbar-transparent {
     padding-top: 0px;
     padding-bottom: 0px;
@@ -220,11 +211,9 @@ span.cerrar:hover {
   .noEsMobile {
     display: none;
   }
-
   .esMobile {
     display: block !important;
   }
-
   .navbar .logo-img-navbar img {
     display: block !important;
     height: 46px;
@@ -246,10 +235,10 @@ span.cerrar:hover {
   }
 }
 
-
 /* FIN PANTALLA MEDIANA */
 
 /* PANTALLA PEQUEÑA */
+
 @media (max-width: 576px) {
   .main-panel .main-content {
     padding: 30px 11px;
@@ -261,21 +250,19 @@ span.cerrar:hover {
   }
 }
 
-.sidebar .nav li:hover > a,
-.sidebar .nav li .dropdown-menu a:hover,
-.sidebar .nav li .dropdown-menu a:focus > [data-toggle='collapse'] {
+.sidebar .nav li:hover>a, .sidebar .nav li .dropdown-menu a:hover, .sidebar .nav li .dropdown-menu a:focus>[data-toggle='collapse'] {
   background-color: rgba(189, 216, 252, 0.6) !important;
   color: #fff;
   box-shadow: none;
 }
 
-.sidebar .nav li.active > [data-toggle='collapse'] {
+.sidebar .nav li.active>[data-toggle='collapse'] {
   background-color: rgba(189, 216, 252, 0.2) !important;
   color: #fff;
   box-shadow: none;
 }
 
-.sidebar[data-color='white'] .nav .nav-item.active > a:not([data-toggle='collapse']) {
+.sidebar[data-color='white'] .nav .nav-item.active>a:not([data-toggle='collapse']) {
   color: #fff;
   background-color: rgba(189, 216, 252, 0.4) !important;
 }
@@ -296,6 +283,7 @@ span.cerrar:hover {
   font-size: 5rem;
   min-height: 64px;
 }
+
 .card-stats .icon-size-4 {
   font-size: 4rem;
   min-height: 64px;
@@ -311,6 +299,7 @@ span.cerrar:hover {
   text-align: right;
   font-size: 2em;
 }
+
 .card-stats .card-body .numbers .card-category {
   color: #9a9a9a;
   font-size: 16px;
@@ -324,21 +313,26 @@ span.cerrar:hover {
 .card-stats .card-footer {
   padding: 0px 15px 15px;
 }
+
 .card-stats .card-footer .stats {
   color: #9a9a9a;
 }
+
 .card.card-stats .card-body {
   box-shadow: 0 1px 1px 0px rgba(0, 0, 0, 0.1);
 }
+
 .card.card-stats .text-cyan {
   color: #51cbce;
 }
+
 .card .card-footer .stats i {
   margin-right: 10px;
   position: relative;
   top: 5px;
   color: #66615b;
 }
+
 .mat-progress-spinner {
   position: relative;
   margin-left: 50%;
@@ -353,10 +347,7 @@ span.cerrar:hover {
   margin-right: auto;
 }
 
-
-
-.table.table-loading > tbody > tr > td > button,
-.table-loading {
+.table.table-loading>tbody>tr>td>button, .table-loading {
   /* background: #e6dddd1a; */
   color: rgb(150, 150, 150) !important;
 }
@@ -364,37 +355,35 @@ span.cerrar:hover {
 .table-bordered {
   border: 0px;
 }
-.table-bordered > thead {
+
+.table-bordered>thead {
   border: 1px solid #f0f0f0;
 }
 
-.table > tbody > tr > td,
-.table > tbody > tr > th {
+.table>tbody>tr>td, .table>tbody>tr>th {
   padding-top: 3px;
   padding-bottom: 3px;
   font-size: 0.8rem !important;
 }
-.table > thead > tr > th {
+
+.table>thead>tr>th {
   font-size: 0.875rem !important;
   font-weight: bolder;
 }
-
 
 .sidebar .nav p {
   font-weight: bolder;
 }
 
-.sidebar .sidebar-wrapper > .nav [data-toggle='collapse'] ~ div > ul > li > a .sidebar-normal,
-.sidebar .sidebar-wrapper .user .user-info [data-toggle='collapse'] ~ div > ul > li > a .sidebar-normal {
+.sidebar .sidebar-wrapper>.nav [data-toggle='collapse']~div>ul>li>a .sidebar-normal, .sidebar .sidebar-wrapper .user .user-info [data-toggle='collapse']~div>ul>li>a .sidebar-normal {
   font-weight: 400;
 }
 
-.sidebar .sidebar-wrapper > .nav [data-toggle='collapse'] ~ div > ul > li > a .sidebar-mini,
-.sidebar .sidebar-wrapper .user .user-info [data-toggle='collapse'] ~ div > ul > li > a .sidebar-mini {
+.sidebar .sidebar-wrapper>.nav [data-toggle='collapse']~div>ul>li>a .sidebar-mini, .sidebar .sidebar-wrapper .user .user-info [data-toggle='collapse']~div>ul>li>a .sidebar-mini {
   font-weight: 400;
 }
 
-.sidebar .user .user-info > a > span {
+.sidebar .user .user-info>a>span {
   font-weight: 500;
 }
 
@@ -403,7 +392,7 @@ span.cerrar:hover {
   font-size: 13px !important;
 }
 
-.multiline-tooltip{
+.multiline-tooltip {
   white-space: pre-line;
 }
 
@@ -412,15 +401,13 @@ span.cerrar:hover {
   text-align: left !important;
 }
 
-.mat-option{
+.mat-option {
   height: 39px !important;
 }
 
-.text-orange{
+.text-orange {
   color: orange;
 }
-
-
 
 .nav-tabs .nav-link.active {
   color: #ffffff !important;
@@ -438,10 +425,12 @@ span.cerrar:hover {
 }
 
 /***********/
+
 .CodeMirror {
-    background-color: #2b2b2b !important;
+  background-color: #2b2b2b !important;
 }
-.CodeMirror-gutter.CodeMirror-linenumbers{
+
+.CodeMirror-gutter.CodeMirror-linenumbers {
   background-color: #313335 !important;
 }
 
@@ -459,7 +448,7 @@ span.cerrar:hover {
   font-size: 14px;
 }
 
-.CodeMirror pre.CodeMirror-line, .CodeMirror pre{
+.CodeMirror pre.CodeMirror-line, .CodeMirror pre {
   height: 17px;
   /* max-height: 17px; */
 }
@@ -478,9 +467,8 @@ span.cerrar:hover {
   font-style: italic;
 }
 
-
 .cm-s-darcula span.cm-def {
-  color: #3b97f9 ;
+  color: #3b97f9;
   font-style: italic;
 }
 
@@ -492,31 +480,28 @@ span.cerrar:hover {
   color: #e0d700;
 }
 
-
 /**************************************/
 
-.scroll-y{
+.scroll-y {
   overflow-y: scroll;
 }
 
-.scroll-y.hidden-scroll{
+.scroll-y.hidden-scroll {
   overflow-y: hidden;
 }
 
-
-
-.bg-dark-body{
-  background:rgb(43, 43, 43)
+.bg-dark-body {
+  background: rgb(43, 43, 43)
 }
-
 
 /**************************************/
-.as-split-gutter-icon{
+
+.as-split-gutter-icon {
   background-color: #212121;
-  /* background-image: none !important; */
+  background-image: none !important;
 }
 
-.as-split-gutter{
+.as-split-gutter {
   flex-basis: 5px !important;
   background-color: transparent !important;
 }
@@ -524,13 +509,14 @@ span.cerrar:hover {
 as-split-area.rounted {
   border-radius: 6px;
 }
+
 as-split.rounted {
   border-radius: 6px;
 }
 
 /**************************************/
 
-.card-body{
+.card-body {
   border-top-left-radius: 0px !important;
   border-top-right-radius: 0px !important;
 }
@@ -543,9 +529,12 @@ as-split.rounted {
   border-bottom: 0.1rem solid #6c747d;
 }
 
-.material-icons.md-12 { font-size: 12px; }
+.material-icons.md-12 {
+  font-size: 12px;
+}
 
 /******** MATERIAL ************/
+
 .mat-form-field-empty.mat-form-field-label {
   color: #b9b9b9
 }
@@ -555,31 +544,35 @@ as-split.rounted {
 }
 
 /* Color del label cuando ya hay algo escrito y no hay focus */
-.mat-form-field-appearance-legacy .mat-form-field-label{
+
+.mat-form-field-appearance-legacy .mat-form-field-label {
   color: rgb(228, 133, 56) !important;
 }
+
 /* Color del texto */
+
 input.mat-input-element {
   color: orange !important;
 }
+
 /* Color del label cuando se esta escribiendo */
+
 .mat-form-field.mat-focused .mat-form-field-label {
   color: orange !important;
 }
-/* Color de los border del input */
-.mat-focused .mat-form-field-underline .mat-form-field-ripple{
-  background-color: orange !important;
-} 
 
+/* Color de los border del input */
+
+.mat-focused .mat-form-field-underline .mat-form-field-ripple {
+  background-color: orange !important;
+}
 
 /******* SWAL2 ****/
-.swal2-popup,
-.swal2-modal,
-.swal2-show{
+
+.swal2-popup, .swal2-modal, .swal2-show {
   background: #343a40 !important;
 }
 
-.swal2-content,
-.swal2-title {
+.swal2-content, .swal2-title {
   color: #b9b9b9 !important;
 }
