@@ -56,3 +56,13 @@
 .close {
     opacity: unset !important;
 }
+
+.mat-radio-button {
+    margin-left: 16px;
+}
+
+.example-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+}

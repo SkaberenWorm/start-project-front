@@ -9,6 +9,7 @@ import {
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
+  MatRadioModule,
   MatSelectModule,
   MatTooltipModule,
   MatTreeModule,
@@ -52,7 +53,8 @@ import { UtilValidation } from './util/util.validation';
     MatFormFieldModule,
     MatTooltipModule,
     MatDividerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatRadioModule
   ],
   providers: [
     Util,
