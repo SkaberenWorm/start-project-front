@@ -39,7 +39,7 @@
     "@ngrx/effects": "^8.2.0",
     "@ngrx/store": "^8.6.0",
     "@ngrx/store-devtools": "^8.6.0",
-    "ajv": "6.10.0",
+    "ajv": "6.12.3",
     "amazing-time-picker": "^1.8.0",
     "angular-calendar": "0.27.9",
     "angular-split": "^3.0.3",
